@@ -80,7 +80,7 @@ When user selects Turkish, TR-tagged traces appear first. Same for Hindi, etc.
 - Next.js 16 (App Router)
 - TypeScript
 - Tailwind CSS
-- JSON file storage (Netlify-compatible)
+- Turso (SQLite edge database)
 
 ## Deployment (Netlify)
 
@@ -90,22 +90,24 @@ When user selects Turkish, TR-tagged traces appear first. Same for Hindi, etc.
 2. Connect repo to Netlify
 3. Build settings are auto-configured via `netlify.toml`
 
-### Environment Variables (Optional)
+### Environment Variables (Required)
 
 Set in Netlify dashboard → Site settings → Environment variables:
 
-| Variable | Description |
-|----------|-------------|
-| `OPENAI_API_KEY` | Enables AI translation via OpenAI |
-| `LIBRETRANSLATE_URL` | Self-hosted LibreTranslate URL |
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `TURSO_DATABASE_URL` | Yes | Turso database URL (e.g., `libsql://mindtrace-xxx.turso.io`) |
+| `TURSO_AUTH_TOKEN` | Yes | Turso authentication token |
+| `OPENAI_API_KEY` | No | Enables AI translation via OpenAI |
+| `LIBRETRANSLATE_URL` | No | Self-hosted LibreTranslate URL |
 
-### Data Persistence Note
+### Turso Setup
 
-This app uses JSON file storage in `/tmp` for Netlify serverless functions. Data persists during function execution but resets between deploys. For production with persistent data, consider:
-
-- [Turso](https://turso.tech) (SQLite edge)
-- [PlanetScale](https://planetscale.com) (MySQL)
-- [Supabase](https://supabase.com) (PostgreSQL)
+1. Create account at [turso.tech](https://turso.tech)
+2. Create database: `turso db create mindtrace`
+3. Get URL: `turso db show mindtrace --url`
+4. Create token: `turso db tokens create mindtrace`
+5. Add both to Netlify environment variables
 
 ## Local Development
 
@@ -115,6 +117,8 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
+
+For local development without Turso, the app uses a local SQLite file.
 
 ## License
 

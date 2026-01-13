@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
   }
   
   // Check cache first
-  const cachedTranslations = getTranslationsByIds(traceIds, lang);
+  const cachedTranslations = await getTranslationsByIds(traceIds, lang);
   const missingIds = traceIds.filter(id => !cachedTranslations.has(id));
   
   const results: Record<string, { problem: string; tags: string[]; available: boolean }> = {};
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
   }
   
   // Get traces that need translation
-  const tracesToTranslate = getTracesByIds(missingIds);
+  const tracesToTranslate = await getTracesByIds(missingIds);
   
   if (tracesToTranslate.length === 0) {
     return NextResponse.json({ translations: results, apiAvailable: true });
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     const original = tracesToTranslate.find(t => t.id === id);
     if (original) {
       // Save with original steps (we only translated problem/tags for list view)
-      saveTranslation(id, lang, trans.problem, original.steps, trans.tags);
+      await saveTranslation(id, lang, trans.problem, original.steps, trans.tags);
       results[id] = { problem: trans.problem, tags: trans.tags, available: true };
     }
   }

@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   const page = parseInt(searchParams.get('page') || '1', 10);
   const locale = searchParams.get('locale') || undefined;
   
-  const result = searchTraces(query, tag, page, 10, locale);
+  const result = await searchTraces(query, tag, page, 10, locale);
   return NextResponse.json(result);
 }
 
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
   }
   
-  const trace = createTrace({
+  const trace = await createTrace({
     problem: body.problem.trim(),
     steps: body.steps.filter((s: string) => s.trim()),
     tags: Array.isArray(body.tags) ? body.tags : [],

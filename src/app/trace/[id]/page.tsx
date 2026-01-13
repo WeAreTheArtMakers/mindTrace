@@ -4,8 +4,8 @@ import { TraceView } from './TraceView';
 
 export default async function TracePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const trace = getTrace(id);
-  const featuredId = getFirstTraceId();
+  const trace = await getTrace(id);
+  const featuredId = await getFirstTraceId();
   
   if (!trace) notFound();
 

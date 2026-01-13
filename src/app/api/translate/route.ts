@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
   }
   
   // Check cache first
-  const cached = getTranslation(traceId, lang);
+  const cached = await getTranslation(traceId, lang);
   if (cached) {
     return NextResponse.json({
       problem: cached.problem,
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
   }
   
   // Get original trace
-  const trace = getTrace(traceId);
+  const trace = await getTrace(traceId);
   if (!trace) {
     return NextResponse.json({ error: 'Trace not found' }, { status: 404 });
   }
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
   }
   
   // Cache the translation
-  saveTranslation(traceId, lang, result.problem, result.steps, result.tags);
+  await saveTranslation(traceId, lang, result.problem, result.steps, result.tags);
   
   return NextResponse.json({
     problem: result.problem,

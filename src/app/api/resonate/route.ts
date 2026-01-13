@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ count: 0 });
   }
   
-  const count = getResonateCount(traceId);
+  const count = await getResonateCount(traceId);
   return NextResponse.json({ count });
 }
 
@@ -20,6 +20,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
   }
   
-  const count = addResonate(traceId);
+  const count = await addResonate(traceId);
   return NextResponse.json({ count });
 }
