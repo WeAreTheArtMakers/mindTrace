@@ -94,17 +94,31 @@ export function searchTraces(query?: string, tag?: string, page = 1, limit = 10,
     filtered = filtered.filter(t => t.tags.includes(tag));
   }
   
-  // Sort by locale match first, then by date
-  if (locale && locale !== 'en') {
-    filtered.sort((a, b) => {
+  // Always sort by date first (newest first)
+  // User-created traces (no seedId) always come before seed traces
+  // Within seed traces, locale-matching ones come first
+  filtered.sort((a, b) => {
+    const aIsSeed = !!a.seedId;
+    const bIsSeed = !!b.seedId;
+    
+    // User-created traces always first
+    if (!aIsSeed && bIsSeed) return -1;
+    if (aIsSeed && !bIsSeed) return 1;
+    
+    // Both are user-created: sort by date
+    if (!aIsSeed && !bIsSeed) {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    }
+    
+    // Both are seeds: locale match first, then date
+    if (locale && locale !== 'en') {
       const aMatch = a.localeHint === locale ? 0 : 1;
       const bMatch = b.localeHint === locale ? 0 : 1;
       if (aMatch !== bMatch) return aMatch - bMatch;
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-    });
-  } else {
-    filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-  }
+    }
+    
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
   
   const total = filtered.length;
   const start = (page - 1) * limit;
