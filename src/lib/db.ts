@@ -13,8 +13,9 @@ let initialized = false;
 async function initDB() {
   if (initialized) return;
   
-  await db.batch([
-    `CREATE TABLE IF NOT EXISTS traces (
+  try {
+    // Create tables one by one (batch can be problematic)
+    await db.execute(`CREATE TABLE IF NOT EXISTS traces (
       id TEXT PRIMARY KEY,
       seedId TEXT,
       problem TEXT NOT NULL,
@@ -22,8 +23,9 @@ async function initDB() {
       tags TEXT NOT NULL,
       localeHint TEXT,
       createdAt TEXT NOT NULL
-    )`,
-    `CREATE TABLE IF NOT EXISTS translations (
+    )`);
+    
+    await db.execute(`CREATE TABLE IF NOT EXISTS translations (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       traceId TEXT NOT NULL,
       lang TEXT NOT NULL,
@@ -32,43 +34,48 @@ async function initDB() {
       tags TEXT NOT NULL,
       createdAt TEXT NOT NULL,
       UNIQUE(traceId, lang)
-    )`,
-    `CREATE TABLE IF NOT EXISTS resonates (
+    )`);
+    
+    await db.execute(`CREATE TABLE IF NOT EXISTS resonates (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       traceId TEXT NOT NULL,
       createdAt TEXT NOT NULL
-    )`,
-    `CREATE INDEX IF NOT EXISTS idx_traces_seedId ON traces(seedId)`,
-    `CREATE INDEX IF NOT EXISTS idx_translations_traceId_lang ON translations(traceId, lang)`,
-    `CREATE INDEX IF NOT EXISTS idx_resonates_traceId ON resonates(traceId)`,
-  ]);
-  
-  // Seed data if empty
-  const result = await db.execute('SELECT COUNT(*) as count FROM traces');
-  const count = Number(result.rows[0]?.count || 0);
-  
-  if (count === 0) {
-    const seeds = getAllSeeds();
-    const now = new Date();
+    )`);
     
-    for (let i = 0; i < seeds.length; i++) {
-      const seed = seeds[i];
-      await db.execute({
-        sql: `INSERT INTO traces (id, seedId, problem, steps, tags, localeHint, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        args: [
-          `seed-${seed.seedId}`,
-          seed.seedId,
-          seed.problem,
-          JSON.stringify(seed.steps),
-          JSON.stringify(seed.tags),
-          seed.localeHint || null,
-          new Date(now.getTime() - i * 3600000).toISOString(),
-        ],
-      });
+    await db.execute(`CREATE INDEX IF NOT EXISTS idx_traces_seedId ON traces(seedId)`);
+    await db.execute(`CREATE INDEX IF NOT EXISTS idx_translations_traceId_lang ON translations(traceId, lang)`);
+    await db.execute(`CREATE INDEX IF NOT EXISTS idx_resonates_traceId ON resonates(traceId)`);
+    
+    // Seed data if empty
+    const result = await db.execute('SELECT COUNT(*) as count FROM traces');
+    const count = Number(result.rows[0]?.count || 0);
+    
+    if (count === 0) {
+      const seeds = getAllSeeds();
+      const now = new Date();
+      
+      for (let i = 0; i < seeds.length; i++) {
+        const seed = seeds[i];
+        await db.execute({
+          sql: `INSERT INTO traces (id, seedId, problem, steps, tags, localeHint, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+          args: [
+            `seed-${seed.seedId}`,
+            seed.seedId,
+            seed.problem,
+            JSON.stringify(seed.steps),
+            JSON.stringify(seed.tags),
+            seed.localeHint || null,
+            new Date(now.getTime() - i * 3600000).toISOString(),
+          ],
+        });
+      }
     }
+    
+    initialized = true;
+  } catch (error) {
+    console.error('DB init error:', error);
+    throw error;
   }
-  
-  initialized = true;
 }
 
 export async function createTrace(input: CreateTraceInput): Promise<MindTrace> {
