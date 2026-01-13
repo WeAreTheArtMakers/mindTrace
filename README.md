@@ -119,3 +119,7 @@ Open [http://localhost:3000](http://localhost:3000).
 ## License
 
 MIT
+
+---
+
+Made with ❤️ by [WeAreTheArtMakers](https://github.com/WeAreTheArtMakers)
