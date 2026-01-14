@@ -1,4 +1,4 @@
-<p align="center">
+<p align="left">
   <img src="https://img.shields.io/badge/Next.js-16-black?logo=next.js">
   <img src="https://img.shields.io/badge/TypeScript-blue?logo=typescript">
   <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white">
@@ -7,7 +7,7 @@
   <img src="https://img.shields.io/badge/License-MIT-green">
 </p>
 # MindTrace
-<img src="https://raw.githubusercontent.com/WeAreTheArtMakers/mindTrace/main/mindTrace.png" alt="mindTrace" width="100">
+<img src="https://raw.githubusercontent.com/WeAreTheArtMakers/mindTrace/main/mindTrace.png" alt="mindTrace" width="150">
 
 
 
