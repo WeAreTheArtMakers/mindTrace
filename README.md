@@ -1,5 +1,6 @@
 # MindTrace
-![mindTrace](https://github.com/WeAreTheArtMakers/mindTrace/blob/main/mindTrace.png)
+<img src="https://raw.githubusercontent.com/WeAreTheArtMakers/mindTrace/main/mindTrace.png" alt="mindTrace" width="300">
+
 
 
 A minimal web app for capturing how you think, not just what you conclude.
