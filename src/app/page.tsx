@@ -171,7 +171,7 @@ export default function Home() {
           <p className="text-neutral-500 dark:text-neutral-400 mb-4">{t(lang, 'noResults', { query })}</p>
           <Link
             href={`/new?problem=${encodeURIComponent(query)}`}
-            className="inline-flex px-4 py-3 bg-neutral-800 dark:bg-neutral-200 text-white dark:text-neutral-900 rounded-lg transition-colors hover:bg-neutral-700 dark:hover:bg-neutral-300"
+            className="inline-flex px-4 py-3 bg-gradient-to-r from-[#4fd1c5] to-[#81e6d9] text-neutral-900 font-medium rounded-lg transition-all hover:shadow-lg hover:shadow-[#4fd1c5]/25"
           >
             {t(lang, 'createFirstTrace')}
           </Link>

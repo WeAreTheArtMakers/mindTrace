@@ -73,6 +73,13 @@ type TranslationKeys = {
   scanToOpen: string;
   resonateWithThis: string;
   resonated: string;
+  // Install prompt keys
+  installAppTitle: string;
+  installAppDesc: string;
+  installAppIOSDesc: string;
+  installApp: string;
+  iosStep1: string;
+  iosStep2: string;
 };
 
 const translations: Record<Language, TranslationKeys> = {
@@ -133,6 +140,12 @@ const translations: Record<Language, TranslationKeys> = {
     scanToOpen: 'Scan to open',
     resonateWithThis: 'I thought similarly',
     resonated: 'Resonated',
+    installAppTitle: 'Add MindTrace to Home Screen',
+    installAppDesc: 'Install for quick access and offline use',
+    installAppIOSDesc: 'Add to your home screen for the best experience',
+    installApp: 'Install',
+    iosStep1: 'Tap the Share button',
+    iosStep2: 'Select "Add to Home Screen"',
   },
   tr: {
     appName: 'MindTrace',
@@ -191,6 +204,12 @@ const translations: Record<Language, TranslationKeys> = {
     scanToOpen: 'Açmak için tara',
     resonateWithThis: 'Ben de böyle düşündüm',
     resonated: 'Benzer düşündüm',
+    installAppTitle: 'MindTrace\'i Ana Ekrana Ekle',
+    installAppDesc: 'Hızlı erişim ve çevrimdışı kullanım için yükle',
+    installAppIOSDesc: 'En iyi deneyim için ana ekranına ekle',
+    installApp: 'Yükle',
+    iosStep1: 'Paylaş butonuna dokun',
+    iosStep2: '"Ana Ekrana Ekle" seç',
   },
   fr: {
     appName: 'MindTrace',
@@ -249,6 +268,12 @@ const translations: Record<Language, TranslationKeys> = {
     scanToOpen: 'Scanner pour ouvrir',
     resonateWithThis: 'J\'ai pensé pareil',
     resonated: 'Résonné',
+    installAppTitle: 'Ajouter MindTrace à l\'écran d\'accueil',
+    installAppDesc: 'Installer pour un accès rapide et hors ligne',
+    installAppIOSDesc: 'Ajoutez à votre écran d\'accueil',
+    installApp: 'Installer',
+    iosStep1: 'Appuyez sur Partager',
+    iosStep2: 'Sélectionnez "Sur l\'écran d\'accueil"',
   },
   it: {
     appName: 'MindTrace',
@@ -307,6 +332,12 @@ const translations: Record<Language, TranslationKeys> = {
     scanToOpen: 'Scansiona per aprire',
     resonateWithThis: 'Ho pensato lo stesso',
     resonated: 'Risonato',
+    installAppTitle: 'Aggiungi MindTrace alla schermata Home',
+    installAppDesc: 'Installa per accesso rapido e offline',
+    installAppIOSDesc: 'Aggiungi alla schermata Home',
+    installApp: 'Installa',
+    iosStep1: 'Tocca il pulsante Condividi',
+    iosStep2: 'Seleziona "Aggiungi a Home"',
   },
   de: {
     appName: 'MindTrace',
@@ -365,6 +396,12 @@ const translations: Record<Language, TranslationKeys> = {
     scanToOpen: 'Scannen zum Öffnen',
     resonateWithThis: 'Ich dachte ähnlich',
     resonated: 'Resoniert',
+    installAppTitle: 'MindTrace zum Startbildschirm hinzufügen',
+    installAppDesc: 'Für schnellen Zugriff und Offline-Nutzung installieren',
+    installAppIOSDesc: 'Zum Startbildschirm hinzufügen',
+    installApp: 'Installieren',
+    iosStep1: 'Tippe auf Teilen',
+    iosStep2: 'Wähle "Zum Home-Bildschirm"',
   },
   ar: {
     appName: 'MindTrace',
@@ -423,6 +460,12 @@ const translations: Record<Language, TranslationKeys> = {
     scanToOpen: 'امسح للفتح',
     resonateWithThis: 'فكرت بالمثل',
     resonated: 'تجاوب',
+    installAppTitle: 'أضف MindTrace للشاشة الرئيسية',
+    installAppDesc: 'ثبّت للوصول السريع والاستخدام بدون إنترنت',
+    installAppIOSDesc: 'أضف للشاشة الرئيسية لأفضل تجربة',
+    installApp: 'تثبيت',
+    iosStep1: 'اضغط على زر المشاركة',
+    iosStep2: 'اختر "إضافة للشاشة الرئيسية"',
   },
   hi: {
     appName: 'MindTrace',
@@ -481,6 +524,12 @@ const translations: Record<Language, TranslationKeys> = {
     scanToOpen: 'खोलने के लिए स्कैन करें',
     resonateWithThis: 'मैंने भी ऐसा सोचा',
     resonated: 'सहमत',
+    installAppTitle: 'MindTrace को होम स्क्रीन पर जोड़ें',
+    installAppDesc: 'त्वरित पहुंच और ऑफलाइन उपयोग के लिए इंस्टॉल करें',
+    installAppIOSDesc: 'बेहतर अनुभव के लिए होम स्क्रीन पर जोड़ें',
+    installApp: 'इंस्टॉल करें',
+    iosStep1: 'शेयर बटन पर टैप करें',
+    iosStep2: '"होम स्क्रीन पर जोड़ें" चुनें',
   },
   ja: {
     appName: 'MindTrace',
@@ -539,6 +588,12 @@ const translations: Record<Language, TranslationKeys> = {
     scanToOpen: 'スキャンして開く',
     resonateWithThis: '同じように考えた',
     resonated: '共感した',
+    installAppTitle: 'MindTraceをホーム画面に追加',
+    installAppDesc: 'クイックアクセスとオフライン使用のためにインストール',
+    installAppIOSDesc: 'ホーム画面に追加してください',
+    installApp: 'インストール',
+    iosStep1: '共有ボタンをタップ',
+    iosStep2: '「ホーム画面に追加」を選択',
   },
   zh: {
     appName: 'MindTrace',
@@ -597,6 +652,12 @@ const translations: Record<Language, TranslationKeys> = {
     scanToOpen: '扫描打开',
     resonateWithThis: '我也这么想',
     resonated: '有共鸣',
+    installAppTitle: '将MindTrace添加到主屏幕',
+    installAppDesc: '安装以快速访问和离线使用',
+    installAppIOSDesc: '添加到主屏幕以获得最佳体验',
+    installApp: '安装',
+    iosStep1: '点击分享按钮',
+    iosStep2: '选择"添加到主屏幕"',
   },
 };
 
