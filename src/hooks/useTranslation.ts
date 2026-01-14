@@ -19,12 +19,13 @@ export function useTraceTranslation(trace: MindTrace | null): TranslationResult 
   const [showOriginalNote, setShowOriginalNote] = useState(false);
 
   useEffect(() => {
-    if (!trace || lang === 'en') {
+    if (!trace) {
       setTranslation(null);
       setShowOriginalNote(false);
       return;
     }
 
+    // Always try to translate - API will handle if content is already in target language
     setIsTranslating(true);
     setShowOriginalNote(false);
 
@@ -64,6 +65,6 @@ export function useTraceTranslation(trace: MindTrace | null): TranslationResult 
     steps: translation?.steps || trace.steps,
     tags: translation?.tags || trace.tags,
     isTranslating,
-    showOriginalNote: showOriginalNote && lang !== 'en',
+    showOriginalNote,
   };
 }

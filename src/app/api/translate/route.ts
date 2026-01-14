@@ -5,7 +5,7 @@ import { translateTrace } from '@/lib/translate';
 export async function POST(request: NextRequest) {
   const { traceId, lang } = await request.json();
   
-  if (!traceId || !lang || lang === 'en') {
+  if (!traceId || !lang) {
     return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
   }
   

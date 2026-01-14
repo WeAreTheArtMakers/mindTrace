@@ -5,7 +5,7 @@ import { translateBatch } from '@/lib/translate';
 export async function POST(request: NextRequest) {
   const { traceIds, lang } = await request.json();
   
-  if (!Array.isArray(traceIds) || !lang || lang === 'en') {
+  if (!Array.isArray(traceIds) || !lang) {
     return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
   }
   
