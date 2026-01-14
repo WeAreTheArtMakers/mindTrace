@@ -1,4 +1,6 @@
 # MindTrace
+![mindTrace](https://github.com/WeAreTheArtMakers/mindTrace/blob/main/mindTrace.png)
+
 
 A minimal web app for capturing how you think, not just what you conclude.
 
