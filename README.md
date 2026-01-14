@@ -1,5 +1,13 @@
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-16-black?logo=next.js">
+  <img src="https://img.shields.io/badge/TypeScript-blue?logo=typescript">
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white">
+  <img src="https://img.shields.io/badge/Turso-SQLite_Edge-4F46E5">
+  <img src="https://img.shields.io/badge/Netlify-Deployed-00C7B7?logo=netlify">
+  <img src="https://img.shields.io/badge/License-MIT-green">
+</p>
 # MindTrace
-<img src="https://raw.githubusercontent.com/WeAreTheArtMakers/mindTrace/main/mindTrace.png" alt="mindTrace" width="200">
+<img src="https://raw.githubusercontent.com/WeAreTheArtMakers/mindTrace/main/mindTrace.png" alt="mindTrace" width="100">
 
 
 
