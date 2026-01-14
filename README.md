@@ -1,5 +1,5 @@
 # MindTrace
-<img src="https://raw.githubusercontent.com/WeAreTheArtMakers/mindTrace/main/mindTrace.png" alt="mindTrace" width="300">
+<img src="https://raw.githubusercontent.com/WeAreTheArtMakers/mindTrace/main/mindTrace.png" alt="mindTrace" width="200">
 
 
 
