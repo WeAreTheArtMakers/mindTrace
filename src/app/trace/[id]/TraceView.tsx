@@ -64,21 +64,22 @@ export function TraceView({ trace, featuredId }: { trace: MindTrace; featuredId:
           </ol>
         </section>
 
-        {tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-6">
-            {tags.map(tg => (
-              <span key={tg} className="px-3 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-full text-sm dark:text-neutral-300">{tg}</span>
-            ))}
+        <div className="mt-8 pt-6 border-t border-neutral-200 dark:border-neutral-800">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-sm text-neutral-400 dark:text-neutral-500">
+              {new Date(trace.createdAt).toLocaleDateString('en-US', { 
+                year: 'numeric', month: 'long', day: 'numeric' 
+              })}
+            </p>
+            <ResonateButton traceId={trace.id} />
           </div>
-        )}
-
-        <div className="flex items-center justify-between mt-6">
-          <p className="text-sm text-neutral-400 dark:text-neutral-500">
-            {new Date(trace.createdAt).toLocaleDateString('en-US', { 
-              year: 'numeric', month: 'long', day: 'numeric' 
-            })}
-          </p>
-          <ResonateButton traceId={trace.id} />
+          {tags.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {tags.slice(0, 5).map(tg => (
+                <span key={tg} className="px-3 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-full text-sm dark:text-neutral-300">{tg}</span>
+              ))}
+            </div>
+          )}
         </div>
 
         <ShareButtons 

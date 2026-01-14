@@ -13,8 +13,8 @@ export function Footer({ onOpenOnboarding, onOpenPrivacy, onOpenTranslationInfo 
   const { lang } = useLanguage();
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 py-3 px-4 pb-safe">
-      <div className="max-w-lg mx-auto flex items-center justify-between text-sm">
+    <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+      <div className="max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto flex items-center justify-between text-sm">
         <span className="text-neutral-500 dark:text-neutral-400">{t(lang, 'appName')}</span>
         <div className="flex items-center gap-4">
           <button

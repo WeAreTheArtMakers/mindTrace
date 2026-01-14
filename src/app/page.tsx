@@ -184,21 +184,14 @@ export default function Home() {
             <li key={trace.id}>
               <Link
                 href={`/trace/${trace.id}`}
-                className="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg transition-colors hover:bg-white dark:hover:bg-neutral-900 bg-white/50 dark:bg-neutral-900/50"
+                className="flex items-start justify-between gap-4 p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg transition-colors hover:bg-white dark:hover:bg-neutral-900 bg-white/50 dark:bg-neutral-900/50"
               >
-                <p className="text-lg font-medium line-clamp-2 dark:text-white">
+                <p className="text-base font-medium leading-relaxed dark:text-white flex-1 line-clamp-2">
                   {translatedProblems[trace.id] || trace.problem}
                 </p>
-                <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
-                  {trace.steps.length} {trace.steps.length !== 1 ? t(lang, 'steps') : t(lang, 'step')} · {new Date(trace.createdAt).toLocaleDateString()}
-                </p>
-                {trace.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-1 mt-2">
-                    {trace.tags.map(tg => (
-                      <span key={tg} className="px-2 py-0.5 text-xs bg-neutral-100 dark:bg-neutral-800 rounded dark:text-neutral-300">{tg}</span>
-                    ))}
-                  </div>
-                )}
+                <span className="text-sm text-neutral-400 dark:text-neutral-500 whitespace-nowrap flex-shrink-0 pt-0.5">
+                  {trace.steps.length} {trace.steps.length !== 1 ? t(lang, 'steps') : t(lang, 'step')}
+                </span>
               </Link>
             </li>
           ))}
