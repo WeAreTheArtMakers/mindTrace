@@ -7,6 +7,7 @@ interface LanguageContextType {
   lang: Language;
   setLang: (lang: Language) => void;
   isRtl: boolean;
+  userChangedLanguage: boolean; // True if user explicitly changed language
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -35,12 +36,16 @@ function detectBrowserLanguage(): Language {
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Language>('en');
   const [mounted, setMounted] = useState(false);
+  const [userChangedLanguage, setUserChangedLanguage] = useState(false);
 
   useEffect(() => {
     // Priority: localStorage > browser language > default (en)
     const stored = localStorage.getItem('mindtrace-lang') as Language;
+    const hasUserChanged = localStorage.getItem('mindtrace-lang-user-changed') === 'true';
+    
     if (stored && SUPPORTED_LANGUAGES.includes(stored)) {
       setLangState(stored);
+      setUserChangedLanguage(hasUserChanged);
     } else {
       // Auto-detect from browser
       const detected = detectBrowserLanguage();
@@ -59,7 +64,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const setLang = (newLang: Language) => {
     setLangState(newLang);
+    setUserChangedLanguage(true);
     localStorage.setItem('mindtrace-lang', newLang);
+    localStorage.setItem('mindtrace-lang-user-changed', 'true');
   };
 
   if (!mounted) {
@@ -67,7 +74,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <LanguageContext.Provider value={{ lang, setLang, isRtl: isRTL(lang) }}>
+    <LanguageContext.Provider value={{ lang, setLang, isRtl: isRTL(lang), userChangedLanguage }}>
       {children}
     </LanguageContext.Provider>
   );

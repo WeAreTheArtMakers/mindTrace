@@ -97,11 +97,11 @@ export async function createTrace(input: CreateTraceInput): Promise<MindTrace> {
   return trace;
 }
 
-export async function getTrace(id: string): Promise<MindTrace | null> {
+export async function getTrace(id: string): Promise<(MindTrace & { localeHint?: string }) | null> {
   await initDB();
   
   const result = await db.execute({
-    sql: 'SELECT id, problem, steps, tags, createdAt FROM traces WHERE id = ?',
+    sql: 'SELECT id, problem, steps, tags, localeHint, createdAt FROM traces WHERE id = ?',
     args: [id],
   });
   
@@ -113,6 +113,7 @@ export async function getTrace(id: string): Promise<MindTrace | null> {
     problem: String(row.problem),
     steps: JSON.parse(String(row.steps)),
     tags: JSON.parse(String(row.tags)),
+    localeHint: row.localeHint ? String(row.localeHint) : undefined,
     createdAt: String(row.createdAt),
   };
 }

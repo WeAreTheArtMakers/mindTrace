@@ -3,6 +3,7 @@ export interface MindTrace {
   problem: string;
   steps: string[];
   tags: string[];
+  localeHint?: string; // Original language of the trace (e.g., 'tr', 'en')
   createdAt: string;
 }
 

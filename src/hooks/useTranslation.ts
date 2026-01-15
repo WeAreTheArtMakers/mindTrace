@@ -13,7 +13,7 @@ interface TranslationResult {
 }
 
 export function useTraceTranslation(trace: MindTrace | null): TranslationResult {
-  const { lang } = useLanguage();
+  const { lang, userChangedLanguage } = useLanguage();
   const [translation, setTranslation] = useState<{ problem: string; steps: string[]; tags: string[] } | null>(null);
   const [isTranslating, setIsTranslating] = useState(false);
   const [showOriginalNote, setShowOriginalNote] = useState(false);
@@ -25,18 +25,42 @@ export function useTraceTranslation(trace: MindTrace | null): TranslationResult 
       return;
     }
 
-    // Always try to translate - API will handle if content is already in target language
+    // Get trace's original language (default to 'en' if not specified)
+    const traceLocale = trace.localeHint || 'en';
+    
+    // If trace language matches user's current language, no translation needed
+    if (traceLocale === lang) {
+      setTranslation(null);
+      setShowOriginalNote(false);
+      setIsTranslating(false);
+      return;
+    }
+    
+    // If user hasn't explicitly changed language and trace is in their browser language,
+    // don't translate (they're seeing content in their native language)
+    if (!userChangedLanguage && traceLocale === lang) {
+      setTranslation(null);
+      setShowOriginalNote(false);
+      setIsTranslating(false);
+      return;
+    }
+
+    // Need to translate - either user changed language or trace is in different language
     setIsTranslating(true);
     setShowOriginalNote(false);
 
     fetch('/api/translate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ traceId: trace.id, lang }),
+      body: JSON.stringify({ traceId: trace.id, lang, userChangedLanguage }),
     })
       .then(r => r.json())
       .then(data => {
-        if (data.available === false) {
+        if (data.skipped) {
+          // No translation needed - same language
+          setTranslation(null);
+          setShowOriginalNote(false);
+        } else if (data.available === false) {
           // No API key or error - show original with note
           setShowOriginalNote(true);
           setTranslation(null);
@@ -54,7 +78,7 @@ export function useTraceTranslation(trace: MindTrace | null): TranslationResult 
         setTranslation(null);
       })
       .finally(() => setIsTranslating(false));
-  }, [trace, lang]);
+  }, [trace, lang, userChangedLanguage]);
 
   if (!trace) {
     return { problem: '', steps: [], tags: [], isTranslating: false, showOriginalNote: false };
