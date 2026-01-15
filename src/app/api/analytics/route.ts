@@ -102,10 +102,55 @@ export async function GET(request: NextRequest) {
     
     // Recent events (last 50)
     const recentResult = await db.execute(`
-      SELECT name, path, createdAt 
+      SELECT name, path, properties, createdAt 
       FROM analytics 
       ORDER BY createdAt DESC 
       LIMIT 50
+    `);
+    
+    // Device stats
+    const deviceStats = await db.execute(`
+      SELECT 
+        json_extract(properties, '$.device') as device,
+        COUNT(*) as count
+      FROM analytics 
+      WHERE properties IS NOT NULL AND json_extract(properties, '$.device') IS NOT NULL
+      GROUP BY device
+    `);
+    
+    // Browser stats
+    const browserStats = await db.execute(`
+      SELECT 
+        json_extract(properties, '$.browser') as browser,
+        COUNT(*) as count
+      FROM analytics 
+      WHERE properties IS NOT NULL AND json_extract(properties, '$.browser') IS NOT NULL
+      GROUP BY browser
+    `);
+    
+    // Average time on page (from page_leave events)
+    const avgTimeResult = await db.execute(`
+      SELECT 
+        path,
+        AVG(CAST(json_extract(properties, '$.duration') AS INTEGER)) as avgDuration,
+        COUNT(*) as visits
+      FROM analytics 
+      WHERE name = 'page_leave' AND json_extract(properties, '$.duration') IS NOT NULL
+      GROUP BY path
+      ORDER BY visits DESC
+      LIMIT 10
+    `);
+    
+    // Language stats
+    const langStats = await db.execute(`
+      SELECT 
+        json_extract(properties, '$.language') as lang,
+        COUNT(*) as count
+      FROM analytics 
+      WHERE properties IS NOT NULL AND json_extract(properties, '$.language') IS NOT NULL
+      GROUP BY lang
+      ORDER BY count DESC
+      LIMIT 10
     `);
     
     return NextResponse.json({
@@ -114,7 +159,20 @@ export async function GET(request: NextRequest) {
       eventCounts: eventCountsResult.rows.map(r => ({ name: r.name, count: Number(r.count) })),
       topPages: pageViewsResult.rows.map(r => ({ path: r.path, count: Number(r.count) })),
       weeklyTrend: trendResult.rows.map(r => ({ date: r.date, count: Number(r.count) })),
-      recentEvents: recentResult.rows.map(r => ({ name: r.name, path: r.path, time: r.createdAt })),
+      recentEvents: recentResult.rows.map(r => ({ 
+        name: r.name, 
+        path: r.path, 
+        time: r.createdAt,
+        properties: r.properties ? JSON.parse(String(r.properties)) : null
+      })),
+      devices: deviceStats.rows.map(r => ({ device: r.device, count: Number(r.count) })),
+      browsers: browserStats.rows.map(r => ({ browser: r.browser, count: Number(r.count) })),
+      avgTimeOnPage: avgTimeResult.rows.map(r => ({ 
+        path: r.path, 
+        avgDuration: Math.round(Number(r.avgDuration)), 
+        visits: Number(r.visits) 
+      })),
+      languages: langStats.rows.map(r => ({ lang: r.lang, count: Number(r.count) })),
     });
   } catch (error) {
     console.error('Analytics GET error:', error);
