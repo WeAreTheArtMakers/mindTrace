@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     title: 'MindTrace - Düşünce Sürecinizi Kaydedin',
     description: 'Sadece sonuçları değil, nasıl düşündüğünüzü de kaydedin. Problem çözme yolculuğunuzu adım adım belgeleyin.',
     images: {
-      url: 'https://raw.githubusercontent.com/WeAreTheArtMakers/mindTrace/main/public/logo.png',
+      url: 'https://thinktrail.netlify.app/og-image-optimized.jpg',
       alt: 'MindTrace - Düşünce Sürecinizi Kaydedin',
     },
   },
@@ -133,7 +133,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="twitter:creator" content="@thinktrail" />
         <meta name="twitter:title" content="MindTrace - Düşünce Sürecinizi Kaydedin" />
         <meta name="twitter:description" content="Sadece sonuçları değil, nasıl düşündüğünüzü de kaydedin. Problem çözme yolculuğunuzu adım adım belgeleyin." />
-        <meta name="twitter:image" content="https://raw.githubusercontent.com/WeAreTheArtMakers/mindTrace/main/public/logo.png" />
+        <meta name="twitter:image" content="https://thinktrail.netlify.app/og-image-optimized.jpg" />
         <meta name="twitter:image:alt" content="MindTrace - Düşünce Sürecinizi Kaydedin" />
         {/* Open Graph meta tags */}
         <meta property="og:type" content="website" />
