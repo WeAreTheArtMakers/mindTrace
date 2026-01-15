@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     siteName: 'MindTrace',
     images: [
       {
-        url: '/logo.png',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'MindTrace Logo',
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'MindTrace - Capture Your Thinking Process',
     description: 'Document your problem-solving journey step by step.',
-    images: ['/logo.png'],
+    images: ['/og-image.png'],
     creator: '@thinktrail',
   },
   appleWebApp: {
@@ -86,7 +86,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     '@type': 'Organization',
     name: 'MindTrace',
     url: 'https://thinktrail.netlify.app',
-    logo: 'https://thinktrail.netlify.app/logo.png',
+    logo: 'https://thinktrail.netlify.app/og-image.png',
     sameAs: [],
   };
 
