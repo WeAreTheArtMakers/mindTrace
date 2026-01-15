@@ -37,13 +37,13 @@ export const metadata: Metadata = {
     type: 'website',
   },
   twitter: {
-    card: 'summary_large_image',
+    card: 'summary',
     site: '@thinktrail',
     creator: '@thinktrail',
     title: 'MindTrace - Capture Your Thinking Process',
     description: 'Document your problem-solving journey step by step.',
     images: {
-      url: 'https://thinktrail.netlify.app/og-image-optimized.jpg',
+      url: 'https://thinktrail.netlify.app/logo.png',
       alt: 'MindTrace Logo',
     },
   },
@@ -100,12 +100,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="apple-touch-icon" href="/logo.png" />
         {/* Twitter Card meta tags */}
-        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:card" content="summary" />
         <meta name="twitter:site" content="@thinktrail" />
         <meta name="twitter:creator" content="@thinktrail" />
         <meta name="twitter:title" content="MindTrace - Capture Your Thinking Process" />
         <meta name="twitter:description" content="Document your problem-solving journey step by step." />
-        <meta name="twitter:image" content="https://thinktrail.netlify.app/og-image-optimized.jpg" />
+        <meta name="twitter:image" content="https://thinktrail.netlify.app/logo.png" />
         <meta name="twitter:image:alt" content="MindTrace Logo" />
         {/* Open Graph meta tags */}
         <meta property="og:type" content="website" />
