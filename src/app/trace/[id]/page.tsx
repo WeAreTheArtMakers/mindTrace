@@ -33,18 +33,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: [
         {
           url: '/logo.png',
-          width: 1024,
-          height: 1024,
+          width: 1200,
+          height: 630,
           alt: 'MindTrace Logo',
         },
       ],
       type: 'article',
     },
     twitter: {
-      card: 'summary',
+      card: 'summary_large_image',
       title: trace.problem,
       description,
       images: ['/logo.png'],
+      creator: '@thinktrail',
     },
   };
 }

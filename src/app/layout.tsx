@@ -27,8 +27,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: '/logo.png',
-        width: 1024,
-        height: 1024,
+        width: 1200,
+        height: 630,
         alt: 'MindTrace Logo',
       },
     ],
@@ -40,6 +40,7 @@ export const metadata: Metadata = {
     title: 'MindTrace - Capture Your Thinking Process',
     description: 'Document your problem-solving journey step by step.',
     images: ['/logo.png'],
+    creator: '@thinktrail',
   },
   appleWebApp: {
     capable: true,
