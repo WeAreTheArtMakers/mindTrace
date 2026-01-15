@@ -7,6 +7,7 @@ interface AnalyticsData {
   todayEvents: number;
   eventCounts: { name: string; count: number }[];
   topPages: { path: string; count: number }[];
+  traceTitles: Record<string, string>;
   weeklyTrend: { date: string; count: number }[];
   recentEvents: { name: string; path: string; time: string; properties?: { device?: string; browser?: string; [key: string]: string | number | boolean | undefined } }[];
   devices: { device: string; count: number }[];
@@ -88,7 +89,11 @@ export default function AnalyticsPage() {
   const getPageName = (path: string) => {
     if (path === '/') return 'Ana Sayfa';
     if (path === '/new') return 'Yeni Trace';
-    if (path?.startsWith('/trace/')) return `Trace`;
+    if (path?.startsWith('/trace/')) {
+      const traceId = path.replace('/trace/', '');
+      const title = data?.traceTitles?.[traceId];
+      return title ? `📝 ${title}` : 'Trace';
+    }
     return path || 'Bilinmiyor';
   };
 

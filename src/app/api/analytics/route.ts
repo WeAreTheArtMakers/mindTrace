@@ -81,6 +81,57 @@ export async function GET(request: NextRequest) {
       LIMIT 20
     `);
     
+    // Get trace titles for trace pages
+    const tracePaths = pageViewsResult.rows
+      .filter(r => String(r.path).startsWith('/trace/'))
+      .map(r => String(r.path).replace('/trace/', ''));
+    
+    let traceTitles: Record<string, string> = {};
+    if (tracePaths.length > 0) {
+      try {
+        const placeholders = tracePaths.map(() => '?').join(',');
+        const tracesResult = await db.execute({
+          sql: `SELECT id, problem FROM traces WHERE id IN (${placeholders})`,
+          args: tracePaths,
+        });
+        tracesResult.rows.forEach(row => {
+          const problem = String(row.problem);
+          // Get first 5 words
+          const shortTitle = problem.split(' ').slice(0, 5).join(' ');
+          traceTitles[String(row.id)] = shortTitle.length < problem.length ? shortTitle + '...' : shortTitle;
+        });
+      } catch {
+        // Traces table might not exist in analytics-only context
+      }
+    }
+    
+    // Also get titles for avgTimeOnPage traces
+    const avgTimePaths = await db.execute(`
+      SELECT DISTINCT path
+      FROM analytics 
+      WHERE name = 'page_leave' AND path LIKE '/trace/%'
+    `);
+    const avgTimeTraceIds = avgTimePaths.rows
+      .map(r => String(r.path).replace('/trace/', ''))
+      .filter(id => !traceTitles[id]);
+    
+    if (avgTimeTraceIds.length > 0) {
+      try {
+        const placeholders = avgTimeTraceIds.map(() => '?').join(',');
+        const tracesResult = await db.execute({
+          sql: `SELECT id, problem FROM traces WHERE id IN (${placeholders})`,
+          args: avgTimeTraceIds,
+        });
+        tracesResult.rows.forEach(row => {
+          const problem = String(row.problem);
+          const shortTitle = problem.split(' ').slice(0, 5).join(' ');
+          traceTitles[String(row.id)] = shortTitle.length < problem.length ? shortTitle + '...' : shortTitle;
+        });
+      } catch {
+        // Ignore
+      }
+    }
+    
     // Today's events
     const today = new Date().toISOString().split('T')[0];
     const todayResult = await db.execute({
@@ -158,6 +209,7 @@ export async function GET(request: NextRequest) {
       todayEvents,
       eventCounts: eventCountsResult.rows.map(r => ({ name: r.name, count: Number(r.count) })),
       topPages: pageViewsResult.rows.map(r => ({ path: r.path, count: Number(r.count) })),
+      traceTitles,
       weeklyTrend: trendResult.rows.map(r => ({ date: r.date, count: Number(r.count) })),
       recentEvents: recentResult.rows.map(r => ({ 
         name: r.name, 
