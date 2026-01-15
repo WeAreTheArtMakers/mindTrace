@@ -26,10 +26,11 @@ export const metadata: Metadata = {
     siteName: 'MindTrace',
     images: [
       {
-        url: '/og-image.png',
+        url: 'https://thinktrail.netlify.app/og-image-optimized.jpg',
         width: 1200,
         height: 630,
         alt: 'MindTrace Logo',
+        type: 'image/jpeg',
       },
     ],
     locale: 'en_US',
@@ -37,10 +38,14 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    site: '@thinktrail',
+    creator: '@thinktrail',
     title: 'MindTrace - Capture Your Thinking Process',
     description: 'Document your problem-solving journey step by step.',
-    images: ['/og-image.png'],
-    creator: '@thinktrail',
+    images: {
+      url: 'https://thinktrail.netlify.app/og-image-optimized.jpg',
+      alt: 'MindTrace Logo',
+    },
   },
   appleWebApp: {
     capable: true,
@@ -86,7 +91,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     '@type': 'Organization',
     name: 'MindTrace',
     url: 'https://thinktrail.netlify.app',
-    logo: 'https://thinktrail.netlify.app/og-image.png',
+    logo: 'https://thinktrail.netlify.app/og-image-optimized.jpg',
     sameAs: [],
   };
 
@@ -94,6 +99,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" dir="ltr" suppressHydrationWarning>
       <head>
         <link rel="apple-touch-icon" href="/logo.png" />
+        {/* Twitter Card meta tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@thinktrail" />
+        <meta name="twitter:creator" content="@thinktrail" />
+        <meta name="twitter:title" content="MindTrace - Capture Your Thinking Process" />
+        <meta name="twitter:description" content="Document your problem-solving journey step by step." />
+        <meta name="twitter:image" content="https://thinktrail.netlify.app/og-image-optimized.jpg" />
+        <meta name="twitter:image:alt" content="MindTrace Logo" />
+        {/* Open Graph meta tags */}
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="MindTrace - Capture Your Thinking Process" />
+        <meta property="og:description" content="Document your problem-solving journey step by step." />
+        <meta property="og:image" content="https://thinktrail.netlify.app/og-image-optimized.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="MindTrace Logo" />
+        <meta property="og:url" content="https://thinktrail.netlify.app" />
+        <meta property="og:site_name" content="MindTrace" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
