@@ -82,6 +82,11 @@ type TranslationKeys = {
   installApp: string;
   iosStep1: string;
   iosStep2: string;
+  // Similar traces keys
+  similarThoughts: string;
+  howOthersApproached: string;
+  solveItDifferently: string;
+  noSimilarTraces: string;
 };
 
 const translations: Record<Language, TranslationKeys> = {
@@ -148,6 +153,10 @@ const translations: Record<Language, TranslationKeys> = {
     installApp: 'Install',
     iosStep1: 'Tap the Share button',
     iosStep2: 'Select "Add to Home Screen"',
+    similarThoughts: 'Similar Thoughts',
+    howOthersApproached: 'How others approached this problem',
+    solveItDifferently: 'Solve it differently',
+    noSimilarTraces: 'No similar traces yet',
   },
   tr: {
     appName: 'MindTrace',
@@ -212,6 +221,10 @@ const translations: Record<Language, TranslationKeys> = {
     installApp: 'Yükle',
     iosStep1: 'Paylaş butonuna dokun',
     iosStep2: '"Ana Ekrana Ekle" seç',
+    similarThoughts: 'Benzer Düşünceler',
+    howOthersApproached: 'Başkaları bu probleme nasıl yaklaştı',
+    solveItDifferently: 'Farklı çöz',
+    noSimilarTraces: 'Henüz benzer iz yok',
   },
   fr: {
     appName: 'MindTrace',
@@ -276,6 +289,10 @@ const translations: Record<Language, TranslationKeys> = {
     installApp: 'Installer',
     iosStep1: 'Appuyez sur Partager',
     iosStep2: 'Sélectionnez "Sur l\'écran d\'accueil"',
+    similarThoughts: 'Pensées similaires',
+    howOthersApproached: 'Comment d\'autres ont abordé ce problème',
+    solveItDifferently: 'Résoudre différemment',
+    noSimilarTraces: 'Pas encore de traces similaires',
   },
   it: {
     appName: 'MindTrace',
@@ -340,6 +357,10 @@ const translations: Record<Language, TranslationKeys> = {
     installApp: 'Installa',
     iosStep1: 'Tocca il pulsante Condividi',
     iosStep2: 'Seleziona "Aggiungi a Home"',
+    similarThoughts: 'Pensieri simili',
+    howOthersApproached: 'Come altri hanno affrontato questo problema',
+    solveItDifferently: 'Risolvilo diversamente',
+    noSimilarTraces: 'Nessuna traccia simile ancora',
   },
   de: {
     appName: 'MindTrace',
@@ -404,6 +425,10 @@ const translations: Record<Language, TranslationKeys> = {
     installApp: 'Installieren',
     iosStep1: 'Tippe auf Teilen',
     iosStep2: 'Wähle "Zum Home-Bildschirm"',
+    similarThoughts: 'Ähnliche Gedanken',
+    howOthersApproached: 'Wie andere dieses Problem angegangen sind',
+    solveItDifferently: 'Anders lösen',
+    noSimilarTraces: 'Noch keine ähnlichen Spuren',
   },
   ar: {
     appName: 'MindTrace',
@@ -468,6 +493,10 @@ const translations: Record<Language, TranslationKeys> = {
     installApp: 'تثبيت',
     iosStep1: 'اضغط على زر المشاركة',
     iosStep2: 'اختر "إضافة للشاشة الرئيسية"',
+    similarThoughts: 'أفكار مشابهة',
+    howOthersApproached: 'كيف تعامل الآخرون مع هذه المشكلة',
+    solveItDifferently: 'حلها بشكل مختلف',
+    noSimilarTraces: 'لا توجد آثار مشابهة بعد',
   },
   hi: {
     appName: 'MindTrace',
@@ -532,6 +561,10 @@ const translations: Record<Language, TranslationKeys> = {
     installApp: 'इंस्टॉल करें',
     iosStep1: 'शेयर बटन पर टैप करें',
     iosStep2: '"होम स्क्रीन पर जोड़ें" चुनें',
+    similarThoughts: 'समान विचार',
+    howOthersApproached: 'दूसरों ने इस समस्या को कैसे हल किया',
+    solveItDifferently: 'अलग तरीके से हल करें',
+    noSimilarTraces: 'अभी तक कोई समान ट्रेस नहीं',
   },
   ja: {
     appName: 'MindTrace',
@@ -596,6 +629,10 @@ const translations: Record<Language, TranslationKeys> = {
     installApp: 'インストール',
     iosStep1: '共有ボタンをタップ',
     iosStep2: '「ホーム画面に追加」を選択',
+    similarThoughts: '似た考え',
+    howOthersApproached: '他の人がこの問題にどうアプローチしたか',
+    solveItDifferently: '違う方法で解決',
+    noSimilarTraces: 'まだ似たトレースはありません',
   },
   zh: {
     appName: 'MindTrace',
@@ -660,6 +697,10 @@ const translations: Record<Language, TranslationKeys> = {
     installApp: '安装',
     iosStep1: '点击分享按钮',
     iosStep2: '选择"添加到主屏幕"',
+    similarThoughts: '相似想法',
+    howOthersApproached: '其他人如何处理这个问题',
+    solveItDifferently: '用不同方式解决',
+    noSimilarTraces: '还没有相似的记录',
   },
   ru: {
     appName: 'MindTrace',
@@ -724,6 +765,10 @@ const translations: Record<Language, TranslationKeys> = {
     installApp: 'Установить',
     iosStep1: 'Нажмите кнопку «Поделиться»',
     iosStep2: 'Выберите «На экран Домой»',
+    similarThoughts: 'Похожие мысли',
+    howOthersApproached: 'Как другие подошли к этой проблеме',
+    solveItDifferently: 'Решить по-другому',
+    noSimilarTraces: 'Пока нет похожих записей',
   },
   es: {
     appName: 'MindTrace',
@@ -788,6 +833,10 @@ const translations: Record<Language, TranslationKeys> = {
     installApp: 'Instalar',
     iosStep1: 'Toca el botón Compartir',
     iosStep2: 'Selecciona "Añadir a inicio"',
+    similarThoughts: 'Pensamientos similares',
+    howOthersApproached: 'Cómo otros abordaron este problema',
+    solveItDifferently: 'Resolverlo diferente',
+    noSimilarTraces: 'Aún no hay registros similares',
   },
 };
 

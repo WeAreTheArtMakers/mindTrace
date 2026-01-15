@@ -10,6 +10,7 @@ import { OnboardingModal } from '@/components/OnboardingModal';
 import { Modal } from '@/components/Modal';
 import { ShareButtons } from '@/components/ShareButtons';
 import { ResonateButton } from '@/components/ResonateButton';
+import { SimilarTraces } from '@/components/SimilarTraces';
 import type { MindTrace } from '@/types';
 
 export function TraceView({ trace, featuredId }: { trace: MindTrace; featuredId: string | null }) {
@@ -87,6 +88,8 @@ export function TraceView({ trace, featuredId }: { trace: MindTrace; featuredId:
           problem={problem} 
           stepsCount={steps.length} 
         />
+
+        <SimilarTraces traceId={trace.id} problem={problem} />
       </article>
 
       <Footer 

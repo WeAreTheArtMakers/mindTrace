@@ -321,3 +321,38 @@ export async function getAllTraces(): Promise<MindTrace[]> {
     createdAt: String(row.createdAt),
   }));
 }
+
+export async function getSimilarTraces(traceId: string, tags: string[], limit = 3): Promise<MindTrace[]> {
+  await initDB();
+  
+  if (tags.length === 0) return [];
+  
+  // Find traces with overlapping tags, excluding current trace
+  const result = await db.execute({
+    sql: `SELECT id, problem, steps, tags, createdAt FROM traces WHERE id != ? ORDER BY createdAt DESC`,
+    args: [traceId],
+  });
+  
+  // Score traces by tag overlap
+  const scored = result.rows.map(row => {
+    const traceTags = JSON.parse(String(row.tags)) as string[];
+    const overlap = tags.filter(t => traceTags.some(tt => tt.toLowerCase() === t.toLowerCase())).length;
+    return {
+      trace: {
+        id: String(row.id),
+        problem: String(row.problem),
+        steps: JSON.parse(String(row.steps)),
+        tags: traceTags,
+        createdAt: String(row.createdAt),
+      },
+      score: overlap,
+    };
+  });
+  
+  // Return top matches with at least 1 tag overlap
+  return scored
+    .filter(s => s.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map(s => s.trace);
+}
