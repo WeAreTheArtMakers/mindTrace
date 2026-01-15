@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     siteName: 'MindTrace',
     images: [
       {
-        url: 'https://thinktrail.netlify.app/og-image-optimized.jpg',
+        url: 'https://thinktrail.netlify.app/og-image-new.jpg',
         width: 1200,
         height: 630,
         alt: 'MindTrace Logo',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     title: 'MindTrace - Düşünce Sürecinizi Kaydedin',
     description: 'Sadece sonuçları değil, nasıl düşündüğünüzü de kaydedin. Problem çözme yolculuğunuzu adım adım belgeleyin.',
     images: {
-      url: 'https://thinktrail.netlify.app/og-image-optimized.jpg',
+      url: 'https://thinktrail.netlify.app/og-image-new.jpg',
       alt: 'MindTrace - Düşünce Sürecinizi Kaydedin',
     },
   },
@@ -133,13 +133,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="twitter:creator" content="@thinktrail" />
         <meta name="twitter:title" content="MindTrace - Düşünce Sürecinizi Kaydedin" />
         <meta name="twitter:description" content="Sadece sonuçları değil, nasıl düşündüğünüzü de kaydedin. Problem çözme yolculuğunuzu adım adım belgeleyin." />
-        <meta name="twitter:image" content="https://thinktrail.netlify.app/og-image-optimized.jpg" />
+        <meta name="twitter:image" content="https://thinktrail.netlify.app/og-image-new.jpg" />
         <meta name="twitter:image:alt" content="MindTrace - Düşünce Sürecinizi Kaydedin" />
         {/* Open Graph meta tags */}
         <meta property="og:type" content="website" />
         <meta property="og:title" content="MindTrace - Capture Your Thinking Process" />
         <meta property="og:description" content="Document your problem-solving journey step by step." />
-        <meta property="og:image" content="https://thinktrail.netlify.app/og-image-optimized.jpg" />
+        <meta property="og:image" content="https://thinktrail.netlify.app/og-image-new.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="MindTrace Logo" />
