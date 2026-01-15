@@ -37,14 +37,14 @@ export const metadata: Metadata = {
     type: 'website',
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     site: '@thinktrail',
     creator: '@thinktrail',
-    title: 'MindTrace - Capture Your Thinking Process',
-    description: 'Document your problem-solving journey step by step.',
+    title: 'MindTrace - Düşünce Sürecinizi Kaydedin',
+    description: 'Sadece sonuçları değil, nasıl düşündüğünüzü de kaydedin. Problem çözme yolculuğunuzu adım adım belgeleyin.',
     images: {
-      url: 'https://thinktrail.netlify.app/logo.png',
-      alt: 'MindTrace Logo',
+      url: 'https://thinktrail.netlify.app/twitter-card-final.jpg',
+      alt: 'MindTrace - Düşünce Sürecinizi Kaydedin',
     },
   },
   appleWebApp: {
@@ -100,13 +100,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="apple-touch-icon" href="/logo.png" />
         {/* Twitter Card meta tags */}
-        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@thinktrail" />
         <meta name="twitter:creator" content="@thinktrail" />
-        <meta name="twitter:title" content="MindTrace - Capture Your Thinking Process" />
-        <meta name="twitter:description" content="Document your problem-solving journey step by step." />
-        <meta name="twitter:image" content="https://thinktrail.netlify.app/logo.png" />
-        <meta name="twitter:image:alt" content="MindTrace Logo" />
+        <meta name="twitter:title" content="MindTrace - Düşünce Sürecinizi Kaydedin" />
+        <meta name="twitter:description" content="Sadece sonuçları değil, nasıl düşündüğünüzü de kaydedin. Problem çözme yolculuğunuzu adım adım belgeleyin." />
+        <meta name="twitter:image" content="https://thinktrail.netlify.app/twitter-card-final.jpg" />
+        <meta name="twitter:image:alt" content="MindTrace - Düşünce Sürecinizi Kaydedin" />
         {/* Open Graph meta tags */}
         <meta property="og:type" content="website" />
         <meta property="og:title" content="MindTrace - Capture Your Thinking Process" />
