@@ -99,6 +99,34 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" dir="ltr" suppressHydrationWarning>
       <head>
         <link rel="apple-touch-icon" href="/logo.png" />
+        {/* Critical CSS to prevent FOUC (Flash of Unstyled Content) */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          :root {
+            --bg: #fafafa;
+            --text: #171717;
+          }
+          .dark {
+            --bg: #0a0a0a;
+            --text: #f5f5f5;
+          }
+          body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+          }
+          /* Hide content until CSS loads */
+          .loading-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+          }
+        ` }} />
         {/* Twitter Card meta tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@thinktrail" />

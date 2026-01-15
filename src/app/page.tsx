@@ -20,8 +20,9 @@ export default function Home() {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   
-  // Modals
+  // Modals - initialize from localStorage to prevent flash
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [onboardingChecked, setOnboardingChecked] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showTranslationInfo, setShowTranslationInfo] = useState(false);
   const [featuredId, setFeaturedId] = useState<string | null>(null);
@@ -52,11 +53,19 @@ export default function Home() {
     fetch('/api/tags').then(r => r.json()).then(setTags);
     fetch('/api/featured').then(r => r.json()).then(d => setFeaturedId(d.id));
     
-    // Check if first visit
-    const seen = localStorage.getItem('mindtrace-onboarding-seen');
-    if (!seen) {
-      setShowOnboarding(true);
-      localStorage.setItem('mindtrace-onboarding-seen', 'true');
+    // Check if first visit - only show onboarding if never seen before
+    // Use a flag to prevent showing on navigation back
+    if (!onboardingChecked) {
+      const seen = localStorage.getItem('mindtrace-onboarding-seen');
+      const sessionSeen = sessionStorage.getItem('mindtrace-onboarding-session');
+      
+      if (!seen && !sessionSeen) {
+        // First time ever - show onboarding
+        setShowOnboarding(true);
+        localStorage.setItem('mindtrace-onboarding-seen', 'true');
+        sessionStorage.setItem('mindtrace-onboarding-session', 'true');
+      }
+      setOnboardingChecked(true);
     }
     
     // Check if offline note shown this session
@@ -64,7 +73,7 @@ export default function Home() {
     if (offlineNoteShown) {
       setShownOfflineNote(true);
     }
-  }, []);
+  }, [onboardingChecked]);
 
   useEffect(() => {
     const timer = setTimeout(fetchTraces, 400);

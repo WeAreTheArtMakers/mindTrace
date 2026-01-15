@@ -17,7 +17,11 @@ export function InstallPrompt() {
   const [isStandalone, setIsStandalone] = useState(false);
 
   useEffect(() => {
-    // Check if already shown
+    // Check if already shown this session
+    const sessionDismissed = sessionStorage.getItem('mindtrace-install-session-dismissed');
+    if (sessionDismissed) return;
+    
+    // Check if permanently dismissed
     const dismissed = localStorage.getItem('mindtrace-install-dismissed');
     if (dismissed) return;
 
@@ -35,19 +39,37 @@ export function InstallPrompt() {
     const handler = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
-      setShowPrompt(true);
+      // Don't show immediately - wait for user engagement
+      // Show after 30 seconds of page interaction
+      setTimeout(() => {
+        setShowPrompt(true);
+      }, 30000);
     };
 
     window.addEventListener('beforeinstallprompt', handler);
 
-    // For iOS - show custom prompt after delay
+    // For iOS - show custom prompt after longer delay (60 seconds)
+    // Only show if user has scrolled or interacted
     if (iOS) {
+      let hasInteracted = false;
+      const interactionHandler = () => {
+        hasInteracted = true;
+      };
+      
+      window.addEventListener('scroll', interactionHandler, { once: true });
+      window.addEventListener('click', interactionHandler, { once: true });
+      
       const timer = setTimeout(() => {
-        setShowPrompt(true);
-      }, 3000);
+        if (hasInteracted) {
+          setShowPrompt(true);
+        }
+      }, 60000);
+      
       return () => {
         clearTimeout(timer);
         window.removeEventListener('beforeinstallprompt', handler);
+        window.removeEventListener('scroll', interactionHandler);
+        window.removeEventListener('click', interactionHandler);
       };
     }
 
@@ -67,6 +89,8 @@ export function InstallPrompt() {
 
   const handleDismiss = () => {
     setShowPrompt(false);
+    // Set both session and permanent dismissal
+    sessionStorage.setItem('mindtrace-install-session-dismissed', 'true');
     localStorage.setItem('mindtrace-install-dismissed', 'true');
   };
 
