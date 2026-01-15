@@ -1,0 +1,14 @@
+# MindTrace - ThinkTrail
+# https://thinktrail.netlify.app
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://thinktrail.netlify.app/sitemap.xml
+
+# Crawl-delay for politeness
+Crawl-delay: 1
+
+# Disallow API routes
+Disallow: /api/

@@ -307,3 +307,17 @@ export async function addResonate(traceId: string): Promise<number> {
   
   return getResonateCount(traceId);
 }
+
+export async function getAllTraces(): Promise<MindTrace[]> {
+  await initDB();
+  
+  const result = await db.execute('SELECT id, problem, steps, tags, createdAt FROM traces ORDER BY createdAt DESC');
+  
+  return result.rows.map(row => ({
+    id: String(row.id),
+    problem: String(row.problem),
+    steps: JSON.parse(String(row.steps)),
+    tags: JSON.parse(String(row.tags)),
+    createdAt: String(row.createdAt),
+  }));
+}
