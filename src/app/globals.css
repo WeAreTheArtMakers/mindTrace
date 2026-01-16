@@ -156,7 +156,7 @@ html {
 /* Modern Glassmorphism Trace Cards */
 .trace-card {
   position: relative;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(229, 229, 229, 0.5);
@@ -165,8 +165,18 @@ html {
   overflow: hidden;
 }
 
+/* Fallback for browsers without backdrop-filter */
+@supports not (backdrop-filter: blur(12px)) {
+  .trace-card {
+    background: rgba(255, 255, 255, 0.95);
+  }
+  .dark .trace-card {
+    background: rgba(23, 23, 23, 0.95);
+  }
+}
+
 .dark .trace-card {
-  background: rgba(23, 23, 23, 0.6);
+  background: rgba(23, 23, 23, 0.75);
   border-color: rgba(64, 64, 64, 0.4);
 }
 
@@ -248,7 +258,9 @@ html {
 /* Modern Pill Tags */
 .tag-select {
   appearance: none;
-  background: rgba(255, 255, 255, 0.8);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(229, 229, 229, 0.6);
@@ -259,6 +271,7 @@ html {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23737373' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
+  background-size: 16px;
   cursor: pointer;
 }
 
@@ -349,7 +362,7 @@ html {
 /* Trace Detail Page - Step Cards */
 .trace-step-card {
   position: relative;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(229, 229, 229, 0.4);
@@ -357,8 +370,17 @@ html {
   transition: all 0.2s ease;
 }
 
+@supports not (backdrop-filter: blur(8px)) {
+  .trace-step-card {
+    background: rgba(255, 255, 255, 0.95);
+  }
+  .dark .trace-step-card {
+    background: rgba(23, 23, 23, 0.95);
+  }
+}
+
 .dark .trace-step-card {
-  background: rgba(23, 23, 23, 0.5);
+  background: rgba(23, 23, 23, 0.7);
   border-color: rgba(64, 64, 64, 0.3);
 }
 

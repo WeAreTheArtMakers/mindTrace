@@ -105,27 +105,45 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           :root {
             --bg: #fafafa;
             --text: #171717;
+            --card-bg: #ffffff;
+            --card-border: #e5e5e5;
+            --muted: #737373;
           }
           .dark {
             --bg: #0a0a0a;
             --text: #f5f5f5;
+            --card-bg: #171717;
+            --card-border: #262626;
+            --muted: #a3a3a3;
           }
-          body {
+          html, body {
             background: var(--bg);
             color: var(--text);
             font-family: system-ui, -apple-system, sans-serif;
             margin: 0;
             min-height: 100vh;
           }
-          /* Hide content until CSS loads */
-          .loading-screen {
-            position: fixed;
-            inset: 0;
-            background: var(--bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
+          /* Critical card styles for immediate render */
+          .trace-card, .trace-step-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 16px;
+          }
+          .search-input, .tag-select {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            width: 100%;
+            color: var(--text);
+          }
+          .step-badge, .tag-pill {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 12px;
           }
         ` }} />
         {/* Twitter Card meta tags */}

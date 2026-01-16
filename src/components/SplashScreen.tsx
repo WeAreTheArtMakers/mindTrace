@@ -4,29 +4,40 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 
 export function SplashScreen() {
-  const [shouldShow, setShouldShow] = useState<boolean | null>(null); // null = checking
+  const [shouldShow, setShouldShow] = useState<boolean | null>(null);
   const [fadeOut, setFadeOut] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  // Check if CSS is actually loaded
+  const checkCSSLoaded = () => {
+    const testEl = document.createElement('div');
+    testEl.className = 'bg-neutral-950';
+    document.body.appendChild(testEl);
+    const computedStyle = window.getComputedStyle(testEl);
+    const bgColor = computedStyle.backgroundColor;
+    document.body.removeChild(testEl);
+    return bgColor === 'rgb(10, 10, 10)' || bgColor === 'rgba(10, 10, 10, 1)';
+  };
+
   // First effect: Check if we should show splash
   useEffect(() => {
-    const cssLoaded = localStorage.getItem('mindtrace-css-loaded');
-    setShouldShow(cssLoaded !== 'true');
+    // Always check if CSS is actually loaded, not just localStorage
+    const cssActuallyLoaded = checkCSSLoaded();
+    
+    if (cssActuallyLoaded) {
+      // CSS is loaded, mark it and don't show splash
+      localStorage.setItem('mindtrace-css-loaded', 'true');
+      setShouldShow(false);
+    } else {
+      // CSS not loaded yet - show splash regardless of localStorage
+      // (localStorage might be stale from previous session)
+      setShouldShow(true);
+    }
   }, []);
 
   // Second effect: Run Matrix animation only when splash is visible
   useEffect(() => {
     if (shouldShow !== true) return;
-
-    const checkCSSLoaded = () => {
-      const testEl = document.createElement('div');
-      testEl.className = 'bg-neutral-950';
-      document.body.appendChild(testEl);
-      const computedStyle = window.getComputedStyle(testEl);
-      const bgColor = computedStyle.backgroundColor;
-      document.body.removeChild(testEl);
-      return bgColor === 'rgb(10, 10, 10)' || bgColor === 'rgba(10, 10, 10, 1)';
-    };
 
     // Wait a frame for canvas to be in DOM
     const initTimeout = setTimeout(() => {
@@ -100,7 +111,7 @@ export function SplashScreen() {
       if (checkAndHide()) return;
 
       let attempts = 0;
-      const maxAttempts = 30;
+      const maxAttempts = 50; // Increased attempts
       const cssCheckInterval = setInterval(() => {
         attempts++;
         if (checkAndHide() || attempts >= maxAttempts) {
