@@ -4,6 +4,7 @@ import { LanguageProvider } from '@/contexts/LanguageContext';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { InstallPrompt } from '@/components/InstallPrompt';
 import { Analytics } from '@/components/Analytics';
+import { SplashScreen } from '@/components/SplashScreen';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://thinktrail.netlify.app'),
@@ -169,6 +170,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen antialiased bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100">
         <ThemeProvider>
           <LanguageProvider>
+            <SplashScreen />
             <main className="max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto px-4 py-6 pb-32">
               {children}
             </main>
