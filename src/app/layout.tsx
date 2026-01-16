@@ -26,11 +26,11 @@ export const metadata: Metadata = {
     siteName: 'MindTrace',
     images: [
       {
-        url: 'https://thinktrail.netlify.app/og-image-new.jpg',
-        width: 1200,
-        height: 630,
+        url: 'https://thinktrail.netlify.app/mindTrace.png',
+        width: 600,
+        height: 600,
         alt: 'MindTrace Logo',
-        type: 'image/jpeg',
+        type: 'image/png',
       },
     ],
     locale: 'en_US',
@@ -139,9 +139,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta property="og:type" content="website" />
         <meta property="og:title" content="MindTrace - Capture Your Thinking Process" />
         <meta property="og:description" content="Document your problem-solving journey step by step." />
-        <meta property="og:image" content="https://thinktrail.netlify.app/og-image-new.jpg" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
+        <meta property="og:image" content="https://thinktrail.netlify.app/mindTrace.png" />
+        <meta property="og:image:width" content="600" />
+        <meta property="og:image:height" content="600" />
         <meta property="og:image:alt" content="MindTrace Logo" />
         <meta property="og:url" content="https://thinktrail.netlify.app" />
         <meta property="og:site_name" content="MindTrace" />

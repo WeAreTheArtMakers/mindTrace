@@ -32,9 +32,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName: 'MindTrace',
       images: [
         {
-          url: 'https://thinktrail.netlify.app/og-image-new.jpg',
-          width: 1200,
-          height: 630,
+          url: 'https://thinktrail.netlify.app/mindTrace.png',
+          width: 600,
+          height: 600,
           alt: 'MindTrace Logo',
         },
       ],
@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: 'summary_large_image',
       title: trace.problem,
       description,
-      images: ['https://thinktrail.netlify.app/og-image-new.jpg'],
+      images: ['https://thinktrail.netlify.app/mindTrace.png'],
       creator: '@thinktrail',
       site: '@thinktrail',
     },
