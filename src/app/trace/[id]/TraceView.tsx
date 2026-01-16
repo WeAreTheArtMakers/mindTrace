@@ -43,7 +43,7 @@ export function TraceView({ trace, featuredId }: { trace: MindTrace; featuredId:
         </Link>
       </header>
 
-      <article>
+      <article className="animate-fade-in">
         {isTranslating && (
           <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-2">{t(lang, 'translating')}</p>
         )}
@@ -51,21 +51,21 @@ export function TraceView({ trace, featuredId }: { trace: MindTrace; featuredId:
           <p className="text-sm text-amber-600 dark:text-amber-400 mb-2">{t(lang, 'translationUnavailable')}</p>
         )}
         
-        <h1 className="text-2xl font-semibold mb-4 dark:text-white">{problem}</h1>
+        <h1 className="text-2xl font-semibold mb-6 dark:text-white">{problem}</h1>
         
-        <section aria-label={t(lang, 'howIThought')}>
-          <h2 className="text-sm font-medium text-neutral-500 dark:text-neutral-400 mb-3">{t(lang, 'howIThought')}</h2>
+        <section aria-label={t(lang, 'howIThought')} className="trace-steps-container">
+          <h2 className="text-sm font-medium text-neutral-500 dark:text-neutral-400 mb-4">{t(lang, 'howIThought')}</h2>
           <ol className="space-y-3">
             {steps.map((step, i) => (
-              <li key={i} className="flex gap-3">
-                <span className="text-neutral-400 dark:text-neutral-500 font-medium flex-shrink-0">{i + 1}.</span>
-                <span className="text-lg dark:text-neutral-200">{step}</span>
+              <li key={i} className="trace-step-card flex gap-4 p-4">
+                <span className="step-number">{i + 1}</span>
+                <span className="text-base dark:text-neutral-200 leading-relaxed">{step}</span>
               </li>
             ))}
           </ol>
         </section>
 
-        <div className="mt-8 pt-6 border-t border-neutral-200 dark:border-neutral-800">
+        <div className="mt-8 pt-6 border-t border-neutral-200/50 dark:border-neutral-800/50">
           <div className="flex items-center justify-between mb-4">
             <p className="text-sm text-neutral-400 dark:text-neutral-500">
               {new Date(trace.createdAt).toLocaleDateString('en-US', { 
@@ -77,7 +77,7 @@ export function TraceView({ trace, featuredId }: { trace: MindTrace; featuredId:
           {tags.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {tags.slice(0, 5).map(tg => (
-                <span key={tg} className="px-3 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-full text-sm dark:text-neutral-300">{tg}</span>
+                <span key={tg} className="tag-pill">{tg}</span>
               ))}
             </div>
           )}

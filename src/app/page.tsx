@@ -139,14 +139,14 @@ export default function Home() {
           placeholder={t(lang, 'searchPlaceholder')}
           value={query}
           onChange={e => { setQuery(e.target.value); setPage(1); }}
-          className="w-full px-4 py-3 text-lg border border-neutral-200 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-300 dark:focus:ring-neutral-600 bg-white dark:bg-neutral-900 dark:text-white"
+          className="search-input w-full px-4 py-3 text-lg dark:text-white"
           aria-label={t(lang, 'searchPlaceholder')}
         />
         {tags.length > 0 && (
           <select
             value={tag}
             onChange={e => { setTag(e.target.value); setPage(1); }}
-            className="w-full px-4 py-3 text-lg border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-300 dark:focus:ring-neutral-600 dark:text-white"
+            className="tag-select w-full dark:text-white"
             aria-label={t(lang, 'allTags')}
           >
             <option value="">{t(lang, 'allTags')}</option>
@@ -188,17 +188,17 @@ export default function Home() {
       ) : hasNoTraces ? (
         <p className="text-neutral-500 dark:text-neutral-400 text-center py-8">{t(lang, 'noTraces')}</p>
       ) : (
-        <ul className="space-y-3" role="list">
+        <ul className="trace-list" role="list">
           {traces.map(trace => (
             <li key={trace.id}>
               <Link
                 href={`/trace/${trace.id}`}
-                className="flex items-start justify-between gap-4 p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg transition-colors hover:bg-white dark:hover:bg-neutral-900 bg-white/50 dark:bg-neutral-900/50"
+                className="trace-card flex items-start justify-between gap-4 p-4"
               >
                 <p className="text-base font-medium leading-relaxed dark:text-white flex-1 line-clamp-2">
                   {translatedProblems[trace.id] || trace.problem}
                 </p>
-                <span className="text-sm text-neutral-400 dark:text-neutral-500 whitespace-nowrap flex-shrink-0 pt-0.5">
+                <span className="step-badge whitespace-nowrap flex-shrink-0">
                   {trace.steps.length} {trace.steps.length !== 1 ? t(lang, 'steps') : t(lang, 'step')}
                 </span>
               </Link>

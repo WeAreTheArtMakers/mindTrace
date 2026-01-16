@@ -4,11 +4,20 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 
 export function SplashScreen() {
-  const [isVisible, setIsVisible] = useState(true);
+  const [shouldShow, setShouldShow] = useState<boolean | null>(null); // null = checking
   const [fadeOut, setFadeOut] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  // First effect: Check if we should show splash
   useEffect(() => {
+    const cssLoaded = localStorage.getItem('mindtrace-css-loaded');
+    setShouldShow(cssLoaded !== 'true');
+  }, []);
+
+  // Second effect: Run Matrix animation only when splash is visible
+  useEffect(() => {
+    if (shouldShow !== true) return;
+
     const checkCSSLoaded = () => {
       const testEl = document.createElement('div');
       testEl.className = 'bg-neutral-950';
@@ -19,98 +28,106 @@ export function SplashScreen() {
       return bgColor === 'rgb(10, 10, 10)' || bgColor === 'rgba(10, 10, 10, 1)';
     };
 
-    // Matrix rain effect
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    // Wait a frame for canvas to be in DOM
+    const initTimeout = setTimeout(() => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const chars = 'MINDTRACEアイウエオカキクケコサシスセソタチツテト0123456789思考過程';
-    const charArray = chars.split('');
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
-    const drops: number[] = [];
-
-    for (let i = 0; i < columns; i++) {
-      drops[i] = Math.random() * -100;
-    }
-
-    const draw = () => {
-      ctx.fillStyle = 'rgba(10, 22, 40, 0.05)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = '#4fd1c5';
-      ctx.font = `${fontSize}px monospace`;
-
-      for (let i = 0; i < drops.length; i++) {
-        const char = charArray[Math.floor(Math.random() * charArray.length)];
-        const x = i * fontSize;
-        const y = drops[i] * fontSize;
-
-        // Gradient effect - brighter at the head
-        const alpha = Math.random() * 0.5 + 0.5;
-        ctx.fillStyle = `rgba(79, 209, 197, ${alpha})`;
-        ctx.fillText(char, x, y);
-
-        if (y > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-    };
-
-    const animationId = setInterval(draw, 50);
-
-    // Handle resize
-    const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-    };
-    window.addEventListener('resize', handleResize);
 
-    // Check CSS loaded
-    const checkAndHide = () => {
-      if (checkCSSLoaded()) {
+      const chars = 'MINDTRACEアイウエオカキクケコサシスセソタチツテト0123456789思考過程';
+      const charArray = chars.split('');
+      const fontSize = 14;
+      const columns = canvas.width / fontSize;
+      const drops: number[] = [];
+
+      for (let i = 0; i < columns; i++) {
+        drops[i] = Math.random() * -100;
+      }
+
+      const draw = () => {
+        ctx.fillStyle = 'rgba(10, 22, 40, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = '#4fd1c5';
+        ctx.font = `${fontSize}px monospace`;
+
+        for (let i = 0; i < drops.length; i++) {
+          const char = charArray[Math.floor(Math.random() * charArray.length)];
+          const x = i * fontSize;
+          const y = drops[i] * fontSize;
+
+          const alpha = Math.random() * 0.5 + 0.5;
+          ctx.fillStyle = `rgba(79, 209, 197, ${alpha})`;
+          ctx.fillText(char, x, y);
+
+          if (y > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        }
+      };
+
+      const animationId = setInterval(draw, 50);
+
+      const handleResize = () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      };
+      window.addEventListener('resize', handleResize);
+
+      const hideSplash = () => {
+        localStorage.setItem('mindtrace-css-loaded', 'true');
         setFadeOut(true);
         setTimeout(() => {
-          setIsVisible(false);
+          setShouldShow(false);
           clearInterval(animationId);
         }, 500);
-        return true;
-      }
-      return false;
-    };
+      };
 
-    if (checkAndHide()) return;
-
-    let attempts = 0;
-    const maxAttempts = 30;
-    const cssCheckInterval = setInterval(() => {
-      attempts++;
-      if (checkAndHide() || attempts >= maxAttempts) {
-        clearInterval(cssCheckInterval);
-        if (attempts >= maxAttempts) {
-          setFadeOut(true);
-          setTimeout(() => {
-            setIsVisible(false);
-            clearInterval(animationId);
-          }, 500);
+      const checkAndHide = () => {
+        if (checkCSSLoaded()) {
+          hideSplash();
+          return true;
         }
-      }
-    }, 100);
+        return false;
+      };
+
+      if (checkAndHide()) return;
+
+      let attempts = 0;
+      const maxAttempts = 30;
+      const cssCheckInterval = setInterval(() => {
+        attempts++;
+        if (checkAndHide() || attempts >= maxAttempts) {
+          clearInterval(cssCheckInterval);
+          if (attempts >= maxAttempts) {
+            hideSplash();
+          }
+        }
+      }, 100);
+
+      // Cleanup stored in ref for the outer effect
+      (window as unknown as { __splashCleanup?: () => void }).__splashCleanup = () => {
+        clearInterval(animationId);
+        clearInterval(cssCheckInterval);
+        window.removeEventListener('resize', handleResize);
+      };
+    }, 50);
 
     return () => {
-      clearInterval(animationId);
-      clearInterval(cssCheckInterval);
-      window.removeEventListener('resize', handleResize);
+      clearTimeout(initTimeout);
+      const cleanup = (window as unknown as { __splashCleanup?: () => void }).__splashCleanup;
+      if (cleanup) cleanup();
     };
-  }, []);
+  }, [shouldShow]);
 
-  if (!isVisible) return null;
+  // Don't render anything while checking or if shouldn't show
+  if (shouldShow !== true) return null;
 
   return (
     <div 
@@ -127,7 +144,6 @@ export function SplashScreen() {
         overflow: 'hidden',
       }}
     >
-      {/* Matrix rain canvas */}
       <canvas
         ref={canvasRef}
         style={{
@@ -137,7 +153,6 @@ export function SplashScreen() {
         }}
       />
       
-      {/* Center glow effect */}
       <div style={{
         position: 'absolute',
         width: '100%',
@@ -146,7 +161,6 @@ export function SplashScreen() {
         animation: 'breathe 3s ease-in-out infinite',
       }} />
 
-      {/* Logo container */}
       <div style={{ 
         position: 'relative',
         zIndex: 10,
@@ -155,7 +169,6 @@ export function SplashScreen() {
         alignItems: 'center', 
         gap: '1.5rem',
       }}>
-        {/* Logo glow */}
         <div style={{
           position: 'absolute',
           width: '600px',
@@ -165,7 +178,6 @@ export function SplashScreen() {
           pointerEvents: 'none',
         }} />
         
-        {/* Full size logo with rounded corners and opacity blend */}
         <div style={{
           position: 'relative',
           zIndex: 1,
@@ -173,7 +185,6 @@ export function SplashScreen() {
           overflow: 'hidden',
           boxShadow: '0 0 100px rgba(79, 209, 197, 0.3)',
         }}>
-          {/* Gradient overlay for edge blending */}
           <div style={{
             position: 'absolute',
             inset: 0,

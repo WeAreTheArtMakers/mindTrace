@@ -152,3 +152,292 @@ html {
   background: linear-gradient(135deg, #0f2744 0%, #0a1628 100%);
   border-color: #1e3a5f;
 }
+
+/* Modern Glassmorphism Trace Cards */
+.trace-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(229, 229, 229, 0.5);
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.dark .trace-card {
+  background: rgba(23, 23, 23, 0.6);
+  border-color: rgba(64, 64, 64, 0.4);
+}
+
+.trace-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(135deg, transparent 0%, rgba(79, 209, 197, 0.1) 50%, transparent 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.trace-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(79, 209, 197, 0.15);
+  border-color: rgba(79, 209, 197, 0.3);
+}
+
+.dark .trace-card:hover {
+  box-shadow: 0 8px 32px rgba(79, 209, 197, 0.1);
+  border-color: rgba(79, 209, 197, 0.4);
+}
+
+.trace-card:hover::before {
+  opacity: 1;
+  animation: gradient-rotate 3s linear infinite;
+}
+
+@keyframes gradient-rotate {
+  0% {
+    background: linear-gradient(0deg, transparent 0%, rgba(79, 209, 197, 0.3) 50%, transparent 100%);
+  }
+  25% {
+    background: linear-gradient(90deg, transparent 0%, rgba(79, 209, 197, 0.3) 50%, transparent 100%);
+  }
+  50% {
+    background: linear-gradient(180deg, transparent 0%, rgba(79, 209, 197, 0.3) 50%, transparent 100%);
+  }
+  75% {
+    background: linear-gradient(270deg, transparent 0%, rgba(79, 209, 197, 0.3) 50%, transparent 100%);
+  }
+  100% {
+    background: linear-gradient(360deg, transparent 0%, rgba(79, 209, 197, 0.3) 50%, transparent 100%);
+  }
+}
+
+/* Modern Step Badge */
+.step-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: linear-gradient(135deg, rgba(79, 209, 197, 0.1) 0%, rgba(129, 230, 217, 0.1) 100%);
+  border: 1px solid rgba(79, 209, 197, 0.2);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #0d9488;
+  transition: all 0.2s ease;
+}
+
+.dark .step-badge {
+  background: linear-gradient(135deg, rgba(79, 209, 197, 0.15) 0%, rgba(129, 230, 217, 0.1) 100%);
+  border-color: rgba(79, 209, 197, 0.3);
+  color: #4fd1c5;
+}
+
+.trace-card:hover .step-badge {
+  background: linear-gradient(135deg, rgba(79, 209, 197, 0.2) 0%, rgba(129, 230, 217, 0.15) 100%);
+  border-color: rgba(79, 209, 197, 0.4);
+}
+
+/* Modern Pill Tags */
+.tag-select {
+  appearance: none;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(229, 229, 229, 0.6);
+  border-radius: 12px;
+  padding: 12px 40px 12px 16px;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23737373' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  cursor: pointer;
+}
+
+.dark .tag-select {
+  background-color: rgba(23, 23, 23, 0.7);
+  border-color: rgba(64, 64, 64, 0.5);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a3a3a3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+.tag-select:focus {
+  outline: none;
+  border-color: rgba(79, 209, 197, 0.5);
+  box-shadow: 0 0 0 3px rgba(79, 209, 197, 0.1);
+}
+
+.tag-select:not(:placeholder-shown),
+.tag-select option:checked:not([value=""]) {
+  border-color: rgba(79, 209, 197, 0.4);
+  background-color: rgba(79, 209, 197, 0.05);
+}
+
+.dark .tag-select:not(:placeholder-shown),
+.dark .tag-select option:checked:not([value=""]) {
+  border-color: rgba(79, 209, 197, 0.5);
+  background-color: rgba(79, 209, 197, 0.1);
+}
+
+/* Modern Search Input */
+.search-input {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(229, 229, 229, 0.6);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.dark .search-input {
+  background: rgba(23, 23, 23, 0.7);
+  border-color: rgba(64, 64, 64, 0.5);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: rgba(79, 209, 197, 0.5);
+  box-shadow: 0 0 0 3px rgba(79, 209, 197, 0.1);
+}
+
+/* Smooth list animations */
+.trace-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.trace-list > li {
+  animation: fade-in 0.3s ease-out;
+  animation-fill-mode: both;
+}
+
+.trace-list > li:nth-child(1) { animation-delay: 0.05s; }
+.trace-list > li:nth-child(2) { animation-delay: 0.1s; }
+.trace-list > li:nth-child(3) { animation-delay: 0.15s; }
+.trace-list > li:nth-child(4) { animation-delay: 0.2s; }
+.trace-list > li:nth-child(5) { animation-delay: 0.25s; }
+.trace-list > li:nth-child(6) { animation-delay: 0.3s; }
+.trace-list > li:nth-child(7) { animation-delay: 0.35s; }
+.trace-list > li:nth-child(8) { animation-delay: 0.4s; }
+.trace-list > li:nth-child(9) { animation-delay: 0.45s; }
+.trace-list > li:nth-child(10) { animation-delay: 0.5s; }
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Page transition animation */
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out;
+}
+
+/* Trace Detail Page - Step Cards */
+.trace-step-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(229, 229, 229, 0.4);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.dark .trace-step-card {
+  background: rgba(23, 23, 23, 0.5);
+  border-color: rgba(64, 64, 64, 0.3);
+}
+
+.trace-step-card:hover {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(79, 209, 197, 0.2);
+}
+
+.dark .trace-step-card:hover {
+  background: rgba(23, 23, 23, 0.7);
+  border-color: rgba(79, 209, 197, 0.3);
+}
+
+/* Step Number Badge */
+.step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, rgba(79, 209, 197, 0.15) 0%, rgba(129, 230, 217, 0.1) 100%);
+  border: 1px solid rgba(79, 209, 197, 0.25);
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0d9488;
+  flex-shrink: 0;
+}
+
+.dark .step-number {
+  background: linear-gradient(135deg, rgba(79, 209, 197, 0.2) 0%, rgba(129, 230, 217, 0.1) 100%);
+  border-color: rgba(79, 209, 197, 0.35);
+  color: #4fd1c5;
+}
+
+/* Tag Pills */
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(229, 229, 229, 0.5);
+  border-radius: 20px;
+  font-size: 13px;
+  color: #525252;
+  transition: all 0.2s ease;
+}
+
+.dark .tag-pill {
+  background: rgba(38, 38, 38, 0.6);
+  border-color: rgba(64, 64, 64, 0.4);
+  color: #a3a3a3;
+}
+
+.tag-pill:hover {
+  border-color: rgba(79, 209, 197, 0.4);
+  color: #0d9488;
+}
+
+.dark .tag-pill:hover {
+  border-color: rgba(79, 209, 197, 0.5);
+  color: #4fd1c5;
+}
+
+/* Steps container with staggered animation */
+.trace-steps-container ol > li {
+  animation: fade-in 0.3s ease-out;
+  animation-fill-mode: both;
+}
+
+.trace-steps-container ol > li:nth-child(1) { animation-delay: 0.1s; }
+.trace-steps-container ol > li:nth-child(2) { animation-delay: 0.15s; }
+.trace-steps-container ol > li:nth-child(3) { animation-delay: 0.2s; }
+.trace-steps-container ol > li:nth-child(4) { animation-delay: 0.25s; }
+.trace-steps-container ol > li:nth-child(5) { animation-delay: 0.3s; }
+.trace-steps-container ol > li:nth-child(6) { animation-delay: 0.35s; }
+.trace-steps-container ol > li:nth-child(7) { animation-delay: 0.4s; }
+.trace-steps-container ol > li:nth-child(8) { animation-delay: 0.45s; }
+.trace-steps-container ol > li:nth-child(9) { animation-delay: 0.5s; }
+.trace-steps-container ol > li:nth-child(10) { animation-delay: 0.55s; }
