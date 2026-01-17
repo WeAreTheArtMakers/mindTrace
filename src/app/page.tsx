@@ -51,6 +51,23 @@ export default function Home() {
         sessionStorage.setItem('mindtrace-offline-note-shown', 'true');
       }
       
+      // Update traces with translated content
+      const updatedTraces = tracesToTranslate.map(trace => {
+        const trans = data.translations?.[trace.id];
+        if (trans) {
+          return {
+            ...trace,
+            problem: trans.problem,
+            steps: trans.steps || trace.steps,
+            tags: trans.tags || trace.tags,
+          };
+        }
+        return trace;
+      });
+      
+      setTraces(updatedTraces);
+      
+      // Also store translated problems for display
       const newTranslations: Record<string, string> = {};
       Object.entries(data.translations || {}).forEach(([id, trans]) => {
         newTranslations[id] = (trans as { problem: string }).problem;
@@ -77,7 +94,12 @@ export default function Home() {
     setTotal(data.total);
     setLoading(false);
     setTranslatedProblems({});
-  }, [query, tag, page, lang]);
+    
+    // Auto-translate after loading traces
+    if (data.traces.length > 0) {
+      doTranslateList(data.traces, lang);
+    }
+  }, [query, tag, page, lang, doTranslateList]);
 
   // Auto-translate when language changes
   useEffect(() => {
