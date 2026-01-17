@@ -87,6 +87,9 @@ type TranslationKeys = {
   howOthersApproached: string;
   solveItDifferently: string;
   noSimilarTraces: string;
+  alternativeSolution: string;
+  alternativeSolutions: string;
+  otherWaysPeopleSolved: string;
 };
 
 const translations: Record<Language, TranslationKeys> = {
@@ -157,6 +160,9 @@ const translations: Record<Language, TranslationKeys> = {
     howOthersApproached: 'How others approached this problem',
     solveItDifferently: 'Solve it differently',
     noSimilarTraces: 'No similar traces yet',
+    alternativeSolution: 'Alternative Solution',
+    alternativeSolutions: 'Alternative Solutions',
+    otherWaysPeopleSolved: 'Other ways people solved this problem',
   },
   tr: {
     appName: 'MindTrace',
@@ -225,6 +231,9 @@ const translations: Record<Language, TranslationKeys> = {
     howOthersApproached: 'Başkaları bu probleme nasıl yaklaştı',
     solveItDifferently: 'Farklı çöz',
     noSimilarTraces: 'Henüz benzer iz yok',
+    alternativeSolution: 'Alternatif Çözüm',
+    alternativeSolutions: 'Alternatif Çözümler',
+    otherWaysPeopleSolved: 'Başkaları bu problemi nasıl çözdü',
   },
   fr: {
     appName: 'MindTrace',
@@ -293,6 +302,9 @@ const translations: Record<Language, TranslationKeys> = {
     howOthersApproached: 'Comment d\'autres ont abordé ce problème',
     solveItDifferently: 'Résoudre différemment',
     noSimilarTraces: 'Pas encore de traces similaires',
+    alternativeSolution: 'Solution Alternative',
+    alternativeSolutions: 'Solutions Alternatives',
+    otherWaysPeopleSolved: 'Autres façons dont les gens ont résolu ce problème',
   },
   it: {
     appName: 'MindTrace',
@@ -361,6 +373,9 @@ const translations: Record<Language, TranslationKeys> = {
     howOthersApproached: 'Come altri hanno affrontato questo problema',
     solveItDifferently: 'Risolvilo diversamente',
     noSimilarTraces: 'Nessuna traccia simile ancora',
+    alternativeSolution: 'Soluzione Alternativa',
+    alternativeSolutions: 'Soluzioni Alternative',
+    otherWaysPeopleSolved: 'Altri modi in cui le persone hanno risolto questo problema',
   },
   de: {
     appName: 'MindTrace',
@@ -429,6 +444,9 @@ const translations: Record<Language, TranslationKeys> = {
     howOthersApproached: 'Wie andere dieses Problem angegangen sind',
     solveItDifferently: 'Anders lösen',
     noSimilarTraces: 'Noch keine ähnlichen Spuren',
+    alternativeSolution: 'Alternative Lösung',
+    alternativeSolutions: 'Alternative Lösungen',
+    otherWaysPeopleSolved: 'Andere Wege, wie Menschen dieses Problem gelöst haben',
   },
   ar: {
     appName: 'MindTrace',
@@ -497,6 +515,9 @@ const translations: Record<Language, TranslationKeys> = {
     howOthersApproached: 'كيف تعامل الآخرون مع هذه المشكلة',
     solveItDifferently: 'حلها بشكل مختلف',
     noSimilarTraces: 'لا توجد آثار مشابهة بعد',
+    alternativeSolution: 'حل بديل',
+    alternativeSolutions: 'حلول بديلة',
+    otherWaysPeopleSolved: 'طرق أخرى حل بها الناس هذه المشكلة',
   },
   hi: {
     appName: 'MindTrace',
@@ -565,6 +586,9 @@ const translations: Record<Language, TranslationKeys> = {
     howOthersApproached: 'दूसरों ने इस समस्या को कैसे हल किया',
     solveItDifferently: 'अलग तरीके से हल करें',
     noSimilarTraces: 'अभी तक कोई समान ट्रेस नहीं',
+    alternativeSolution: 'वैकल्पिक समाधान',
+    alternativeSolutions: 'वैकल्पिक समाधान',
+    otherWaysPeopleSolved: 'अन्य तरीके जिनसे लोगों ने इस समस्या को हल किया',
   },
   ja: {
     appName: 'MindTrace',
@@ -633,6 +657,9 @@ const translations: Record<Language, TranslationKeys> = {
     howOthersApproached: '他の人がこの問題にどうアプローチしたか',
     solveItDifferently: '違う方法で解決',
     noSimilarTraces: 'まだ似たトレースはありません',
+    alternativeSolution: '代替案',
+    alternativeSolutions: '代替案',
+    otherWaysPeopleSolved: 'この問題を解決した他の方法',
   },
   zh: {
     appName: 'MindTrace',
@@ -701,6 +728,9 @@ const translations: Record<Language, TranslationKeys> = {
     howOthersApproached: '其他人如何处理这个问题',
     solveItDifferently: '用不同方式解决',
     noSimilarTraces: '还没有相似的记录',
+    alternativeSolution: '替代方案',
+    alternativeSolutions: '替代方案',
+    otherWaysPeopleSolved: '其他人解决这个问题的方式',
   },
   ru: {
     appName: 'MindTrace',
@@ -769,6 +799,9 @@ const translations: Record<Language, TranslationKeys> = {
     howOthersApproached: 'Как другие подошли к этой проблеме',
     solveItDifferently: 'Решить по-другому',
     noSimilarTraces: 'Пока нет похожих записей',
+    alternativeSolution: 'Альтернативное решение',
+    alternativeSolutions: 'Альтернативные решения',
+    otherWaysPeopleSolved: 'Другие способы, которыми люди решили эту проблему',
   },
   es: {
     appName: 'MindTrace',
@@ -837,6 +870,9 @@ const translations: Record<Language, TranslationKeys> = {
     howOthersApproached: 'Cómo otros abordaron este problema',
     solveItDifferently: 'Resolverlo diferente',
     noSimilarTraces: 'Aún no hay registros similares',
+    alternativeSolution: 'Solución Alternativa',
+    alternativeSolutions: 'Soluciones Alternativas',
+    otherWaysPeopleSolved: 'Otras formas en que las personas resolvieron este problema',
   },
 };
 

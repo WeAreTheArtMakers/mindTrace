@@ -53,10 +53,10 @@ export function SimilarTraces({ traceId, problem }: { traceId: string; problem: 
             <span className="text-2xl">💡</span>
             <div>
               <p className="font-semibold dark:text-white">
-                {alternativeCount} {alternativeCount === 1 ? 'Alternative Solution' : 'Alternative Solutions'}
+                {alternativeCount} {alternativeCount === 1 ? t(lang, 'alternativeSolution') : t(lang, 'alternativeSolutions')}
               </p>
               <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                Other ways people solved this problem
+                {t(lang, 'otherWaysPeopleSolved')}
               </p>
             </div>
           </div>
