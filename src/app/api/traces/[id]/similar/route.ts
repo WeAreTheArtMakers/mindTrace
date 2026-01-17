@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getTrace, getSimilarTraces, getResonateCount } from '@/lib/db';
+import { getTrace, getSimilarTraces, getAlternativeSolutions, getResonateCount } from '@/lib/db';
 
 export async function GET(
   request: NextRequest,
@@ -10,22 +10,33 @@ export async function GET(
     const trace = await getTrace(id);
     
     if (!trace) {
-      return NextResponse.json({ similar: [] });
+      return NextResponse.json({ similar: [], alternatives: [] });
     }
     
     const similar = await getSimilarTraces(id, trace.tags, 3);
+    const alternatives = await getAlternativeSolutions(id, trace.problem, 5);
     
     // Add resonate counts
-    const withCounts = await Promise.all(
+    const withCountsSimilar = await Promise.all(
       similar.map(async (t) => ({
         ...t,
         resonateCount: await getResonateCount(t.id),
       }))
     );
     
-    return NextResponse.json({ similar: withCounts });
+    const withCountsAlternatives = await Promise.all(
+      alternatives.map(async (t) => ({
+        ...t,
+        resonateCount: await getResonateCount(t.id),
+      }))
+    );
+    
+    return NextResponse.json({ 
+      similar: withCountsSimilar,
+      alternatives: withCountsAlternatives 
+    });
   } catch (error) {
     console.error('Similar traces error:', error);
-    return NextResponse.json({ similar: [] });
+    return NextResponse.json({ similar: [], alternatives: [] });
   }
 }

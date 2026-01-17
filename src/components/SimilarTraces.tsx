@@ -16,6 +16,7 @@ interface SimilarTrace {
 export function SimilarTraces({ traceId, problem }: { traceId: string; problem: string }) {
   const { lang } = useLanguage();
   const [similar, setSimilar] = useState<SimilarTrace[]>([]);
+  const [alternatives, setAlternatives] = useState<SimilarTrace[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -23,6 +24,7 @@ export function SimilarTraces({ traceId, problem }: { traceId: string; problem: 
       .then(r => r.json())
       .then(data => {
         setSimilar(data.similar || []);
+        setAlternatives(data.alternatives || []);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -31,7 +33,7 @@ export function SimilarTraces({ traceId, problem }: { traceId: string; problem: 
   if (loading) return null;
   
   return (
-    <div className="mt-10 pt-8 border-t border-neutral-200 dark:border-neutral-800">
+    <div className="mt-10 pt-8 border-t border-neutral-200/50 dark:border-neutral-800/50">
       {/* Solve it differently button */}
       <Link
         href={`/new?problem=${encodeURIComponent(problem)}`}
@@ -40,6 +42,42 @@ export function SimilarTraces({ traceId, problem }: { traceId: string; problem: 
         <span>✏️</span>
         <span>{t(lang, 'solveItDifferently')}</span>
       </Link>
+
+      {/* Alternative Solutions section */}
+      {alternatives.length > 0 && (
+        <div className="mb-8">
+          <h3 className="text-lg font-semibold mb-2 dark:text-white flex items-center gap-2">
+            <span>💡</span> Alternative Solutions
+          </h3>
+          <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-4">
+            Other ways people solved this problem
+          </p>
+          
+          <div className="space-y-3">
+            {alternatives.map((trace) => (
+              <Link
+                key={trace.id}
+                href={`/trace/${trace.id}`}
+                className="trace-card flex items-start justify-between gap-4 p-4"
+              >
+                <div className="flex-1 min-w-0">
+                  <p className="text-base font-medium dark:text-white line-clamp-2 mb-2">
+                    {trace.problem}
+                  </p>
+                  <div className="flex items-center justify-between text-sm text-neutral-500 dark:text-neutral-400">
+                    <span>{trace.steps.length} {trace.steps.length !== 1 ? t(lang, 'steps') : t(lang, 'step')}</span>
+                    {trace.resonateCount > 0 && (
+                      <span className="flex items-center gap-1">
+                        <span>💭</span> {trace.resonateCount}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Similar traces section */}
       {similar.length > 0 && (
@@ -56,18 +94,20 @@ export function SimilarTraces({ traceId, problem }: { traceId: string; problem: 
               <Link
                 key={trace.id}
                 href={`/trace/${trace.id}`}
-                className="block p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors"
+                className="trace-card flex items-start justify-between gap-4 p-4"
               >
-                <p className="text-base font-medium dark:text-white line-clamp-2 mb-2">
-                  {trace.problem}
-                </p>
-                <div className="flex items-center justify-between text-sm text-neutral-500 dark:text-neutral-400">
-                  <span>{trace.steps.length} {trace.steps.length !== 1 ? t(lang, 'steps') : t(lang, 'step')}</span>
-                  {trace.resonateCount > 0 && (
-                    <span className="flex items-center gap-1">
-                      <span>💭</span> {trace.resonateCount}
-                    </span>
-                  )}
+                <div className="flex-1 min-w-0">
+                  <p className="text-base font-medium dark:text-white line-clamp-2 mb-2">
+                    {trace.problem}
+                  </p>
+                  <div className="flex items-center justify-between text-sm text-neutral-500 dark:text-neutral-400">
+                    <span>{trace.steps.length} {trace.steps.length !== 1 ? t(lang, 'steps') : t(lang, 'step')}</span>
+                    {trace.resonateCount > 0 && (
+                      <span className="flex items-center gap-1">
+                        <span>💭</span> {trace.resonateCount}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </Link>
             ))}
@@ -75,7 +115,7 @@ export function SimilarTraces({ traceId, problem }: { traceId: string; problem: 
         </>
       )}
       
-      {similar.length === 0 && (
+      {similar.length === 0 && alternatives.length === 0 && (
         <p className="text-sm text-neutral-400 dark:text-neutral-500 text-center">
           {t(lang, 'noSimilarTraces')}
         </p>

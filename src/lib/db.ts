@@ -357,3 +357,42 @@ export async function getSimilarTraces(traceId: string, tags: string[], limit = 
     .slice(0, limit)
     .map(s => s.trace);
 }
+
+export async function getAlternativeSolutions(traceId: string, problem: string, limit = 5): Promise<MindTrace[]> {
+  await initDB();
+  
+  // Find traces with similar problem text, excluding current trace
+  const result = await db.execute({
+    sql: `SELECT id, problem, steps, tags, createdAt FROM traces WHERE id != ? ORDER BY createdAt DESC`,
+    args: [traceId],
+  });
+  
+  // Score traces by problem text similarity (simple word matching)
+  const problemWords = problem.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+  
+  const scored = result.rows.map(row => {
+    const traceProblem = String(row.problem).toLowerCase();
+    const traceWords = traceProblem.split(/\s+/).filter(w => w.length > 3);
+    
+    // Count matching words
+    const matches = problemWords.filter(w => traceWords.some(tw => tw.includes(w) || w.includes(tw))).length;
+    
+    return {
+      trace: {
+        id: String(row.id),
+        problem: String(row.problem),
+        steps: JSON.parse(String(row.steps)),
+        tags: JSON.parse(String(row.tags)),
+        createdAt: String(row.createdAt),
+      },
+      score: matches,
+    };
+  });
+  
+  // Return top matches with at least 1 word match
+  return scored
+    .filter(s => s.score > 0)
+    .sort((a, b) => b.score - a.score || new Date(b.trace.createdAt).getTime() - new Date(a.trace.createdAt).getTime())
+    .slice(0, limit)
+    .map(s => s.trace);
+}
