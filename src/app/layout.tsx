@@ -116,11 +116,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             --card-border: #262626;
             --muted: #a3a3a3;
           }
-          * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-          }
           html, body {
             background: var(--bg);
             color: var(--text);
