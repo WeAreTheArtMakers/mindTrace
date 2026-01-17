@@ -177,7 +177,7 @@ export default function Home() {
         <button
           onClick={translateList}
           disabled={isTranslatingList}
-          className="mb-4 px-3 py-2 text-sm border border-neutral-200 dark:border-neutral-700 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors dark:text-neutral-300 disabled:opacity-50"
+          className={`mb-4 px-3 py-2 text-sm border border-neutral-200 dark:border-neutral-700 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors dark:text-neutral-300 disabled:opacity-50 ${isTranslatingList ? 'animate-gentle-blink' : ''}`}
         >
           {isTranslatingList ? t(lang, 'translating') : t(lang, 'translateList')}
         </button>

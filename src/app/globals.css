@@ -463,3 +463,18 @@ html {
 .trace-steps-container ol > li:nth-child(8) { animation-delay: 0.45s; }
 .trace-steps-container ol > li:nth-child(9) { animation-delay: 0.5s; }
 .trace-steps-container ol > li:nth-child(10) { animation-delay: 0.55s; }
+
+
+/* Slow gentle blink animation for translation status */
+@keyframes gentle-blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.animate-gentle-blink {
+  animation: gentle-blink 2s ease-in-out infinite;
+}

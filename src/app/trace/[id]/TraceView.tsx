@@ -63,7 +63,7 @@ export function TraceView({ trace, featuredId }: { trace: MindTrace; featuredId:
           <p className="text-sm text-amber-600 dark:text-amber-400 mb-2">{t(lang, 'translationUnavailable')}</p>
         )}
         {isDirectAccess && isTranslating && (
-          <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-4 p-3 bg-neutral-100 dark:bg-neutral-800 rounded">
+          <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-4 p-3 bg-neutral-100 dark:bg-neutral-800 rounded animate-gentle-blink">
             {t(lang, 'translating')}...
           </p>
         )}
