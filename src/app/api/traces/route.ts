@@ -33,6 +33,7 @@ export async function POST(request: NextRequest) {
       problem: body.problem.trim(),
       steps: body.steps.filter((s: string) => s.trim()),
       tags: Array.isArray(body.tags) ? body.tags : [],
+      localeHint: body.localeHint,
     });
     
     return NextResponse.json(trace, { status: 201 });

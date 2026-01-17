@@ -86,12 +86,13 @@ export async function createTrace(input: CreateTraceInput): Promise<MindTrace> {
     problem: input.problem,
     steps: input.steps,
     tags: input.tags,
+    localeHint: input.localeHint,
     createdAt: new Date().toISOString(),
   };
   
   await db.execute({
-    sql: `INSERT INTO traces (id, problem, steps, tags, createdAt) VALUES (?, ?, ?, ?, ?)`,
-    args: [trace.id, trace.problem, JSON.stringify(trace.steps), JSON.stringify(trace.tags), trace.createdAt],
+    sql: `INSERT INTO traces (id, problem, steps, tags, localeHint, createdAt) VALUES (?, ?, ?, ?, ?, ?)`,
+    args: [trace.id, trace.problem, JSON.stringify(trace.steps), JSON.stringify(trace.tags), trace.localeHint || null, trace.createdAt],
   });
   
   return trace;

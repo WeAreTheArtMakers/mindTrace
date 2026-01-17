@@ -33,6 +33,36 @@ export default function Home() {
   const [apiAvailable, setApiAvailable] = useState<boolean | null>(null);
   const [shownOfflineNote, setShownOfflineNote] = useState(false);
 
+  const doTranslateList = useCallback(async (tracesToTranslate: typeof traces, targetLang: Language) => {
+    if (targetLang === 'en' || tracesToTranslate.length === 0) return;
+    
+    setIsTranslatingList(true);
+    try {
+      const res = await fetch('/api/translate/batch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ traceIds: tracesToTranslate.map(t => t.id), lang: targetLang }),
+      });
+      const data = await res.json();
+      setApiAvailable(data.apiAvailable);
+      
+      if (!data.apiAvailable && !shownOfflineNote) {
+        setShownOfflineNote(true);
+        sessionStorage.setItem('mindtrace-offline-note-shown', 'true');
+      }
+      
+      const newTranslations: Record<string, string> = {};
+      Object.entries(data.translations || {}).forEach(([id, trans]) => {
+        newTranslations[id] = (trans as { problem: string }).problem;
+      });
+      setTranslatedProblems(newTranslations);
+    } catch {
+      // Silently fail
+    } finally {
+      setIsTranslatingList(false);
+    }
+  }, [shownOfflineNote]);
+
   const fetchTraces = useCallback(async () => {
     setLoading(true);
     const params = new URLSearchParams();
@@ -55,7 +85,7 @@ export default function Home() {
       setTranslatedProblems({});
       doTranslateList(traces, lang);
     }
-  }, [lang]);
+  }, [lang, traces, doTranslateList]);
 
   useEffect(() => {
     fetch('/api/tags').then(r => r.json()).then(setTags);
@@ -87,36 +117,6 @@ export default function Home() {
     const timer = setTimeout(fetchTraces, 400);
     return () => clearTimeout(timer);
   }, [fetchTraces]);
-
-  const doTranslateList = async (tracesToTranslate: typeof traces, targetLang: Language) => {
-    if (targetLang === 'en' || tracesToTranslate.length === 0) return;
-    
-    setIsTranslatingList(true);
-    try {
-      const res = await fetch('/api/translate/batch', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ traceIds: tracesToTranslate.map(t => t.id), lang: targetLang }),
-      });
-      const data = await res.json();
-      setApiAvailable(data.apiAvailable);
-      
-      if (!data.apiAvailable && !shownOfflineNote) {
-        setShownOfflineNote(true);
-        sessionStorage.setItem('mindtrace-offline-note-shown', 'true');
-      }
-      
-      const newTranslations: Record<string, string> = {};
-      Object.entries(data.translations || {}).forEach(([id, trans]) => {
-        newTranslations[id] = (trans as { problem: string }).problem;
-      });
-      setTranslatedProblems(newTranslations);
-    } catch {
-      // Silently fail
-    } finally {
-      setIsTranslatingList(false);
-    }
-  };
 
   const translateList = async () => {
     doTranslateList(traces, lang);

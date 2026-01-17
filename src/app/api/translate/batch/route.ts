@@ -13,11 +13,11 @@ export async function POST(request: NextRequest) {
   const cachedTranslations = await getTranslationsByIds(traceIds, lang);
   const missingIds = traceIds.filter(id => !cachedTranslations.has(id));
   
-  const results: Record<string, { problem: string; tags: string[]; available: boolean }> = {};
+  const results: Record<string, { problem: string; steps: string[]; tags: string[]; available: boolean }> = {};
   
   // Add cached translations
   cachedTranslations.forEach((trans, id) => {
-    results[id] = { problem: trans.problem, tags: trans.tags, available: true };
+    results[id] = { problem: trans.problem, steps: trans.steps, tags: trans.tags, available: true };
   });
   
   // If all cached, return early

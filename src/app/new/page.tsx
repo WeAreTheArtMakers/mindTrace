@@ -65,6 +65,7 @@ export default function NewTrace() {
         problem: problem.trim(),
         steps: steps.filter(s => s.trim()),
         tags,
+        localeHint: lang,
       }),
     });
     

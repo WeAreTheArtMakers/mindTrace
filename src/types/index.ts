@@ -11,6 +11,7 @@ export interface CreateTraceInput {
   problem: string;
   steps: string[];
   tags: string[];
+  localeHint?: string; // Original language of the trace
 }
 
 export interface SearchParams {
