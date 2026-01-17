@@ -41,7 +41,10 @@ export default function Home() {
       const res = await fetch('/api/translate/batch', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ traceIds: tracesToTranslate.map(t => t.id), lang: targetLang }),
+        body: JSON.stringify({ 
+          traceIds: tracesToTranslate.map(t => t.id), 
+          lang: targetLang
+        }),
       });
       const data = await res.json();
       setApiAvailable(data.apiAvailable);
@@ -76,13 +79,15 @@ export default function Home() {
     setTraces(data.traces);
     setTotal(data.total);
     setLoading(false);
-    setTranslatedProblems({});
+    // Don't clear translatedProblems here - only clear when language changes
   }, [query, tag, page, lang]);
 
-  // Auto-translate when language changes
+  // Auto-translate when language changes (not when traces change)
   useEffect(() => {
-    if (traces.length > 0) {
-      setTranslatedProblems({});
+    // Clear translations when language changes
+    setTranslatedProblems({});
+    
+    if (traces.length > 0 && lang) {
       doTranslateList(traces, lang);
     }
   }, [lang, traces, doTranslateList]);

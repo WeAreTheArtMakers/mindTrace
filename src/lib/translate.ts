@@ -166,14 +166,14 @@ export async function translateTrace(
 }
 
 export async function translateBatch(
-  items: { id: string; problem: string; tags: string[] }[],
+  items: { id: string; problem: string; steps: string[]; tags: string[] }[],
   targetLang: string
-): Promise<{ translations: Record<string, { problem: string; tags: string[] }>; available: boolean }> {
+): Promise<{ translations: Record<string, { problem: string; steps: string[]; tags: string[] }>; available: boolean }> {
   const openaiKey = process.env.OPENAI_API_KEY;
   const libreUrl = process.env.LIBRETRANSLATE_URL;
   const useGoogleFree = process.env.USE_GOOGLE_TRANSLATE !== 'false';
   
-  const translations: Record<string, { problem: string; tags: string[] }> = {};
+  const translations: Record<string, { problem: string; steps: string[]; tags: string[] }> = {};
   
   // Try OpenAI batch (most efficient)
   if (openaiKey) {
@@ -189,7 +189,7 @@ export async function translateBatch(
           messages: [
             {
               role: 'system',
-              content: `Translate the following JSON array to ${LANG_NAMES[targetLang]}. Keep structure, translate only "problem" and "tags" values. Return valid JSON array only.`
+              content: `Translate the following JSON array to ${LANG_NAMES[targetLang]}. Keep structure, translate "problem", "steps", and "tags" values. Return valid JSON array only.`
             },
             { role: 'user', content: JSON.stringify(items) }
           ],
@@ -200,8 +200,8 @@ export async function translateBatch(
       if (response.ok) {
         const data = await response.json();
         const translated = JSON.parse(data.choices[0]?.message?.content || '[]');
-        translated.forEach((item: { id: string; problem: string; tags: string[] }) => {
-          translations[item.id] = { problem: item.problem, tags: item.tags };
+        translated.forEach((item: { id: string; problem: string; steps: string[]; tags: string[] }) => {
+          translations[item.id] = { problem: item.problem, steps: item.steps, tags: item.tags };
         });
         return { translations, available: true };
       }
@@ -221,8 +221,9 @@ export async function translateBatch(
     try {
       for (const item of items) {
         const problem = await translateFn(item.problem);
+        const steps = await Promise.all(item.steps.map(s => translateFn(s)));
         const tags = await Promise.all(item.tags.map(t => translateFn(t)));
-        translations[item.id] = { problem, tags };
+        translations[item.id] = { problem, steps, tags };
       }
       return { translations, available: true };
     } catch (error) {
