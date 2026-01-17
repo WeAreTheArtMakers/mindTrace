@@ -361,38 +361,35 @@ export async function getSimilarTraces(traceId: string, tags: string[], limit = 
 export async function getAlternativeSolutions(traceId: string, problem: string, limit = 5): Promise<MindTrace[]> {
   await initDB();
   
-  // Find traces with similar problem text, excluding current trace
+  // Find traces with EXACT same problem text, excluding current trace
   const result = await db.execute({
-    sql: `SELECT id, problem, steps, tags, createdAt FROM traces WHERE id != ? ORDER BY createdAt DESC`,
-    args: [traceId],
+    sql: `SELECT id, problem, steps, tags, createdAt FROM traces WHERE id != ? AND LOWER(problem) = LOWER(?) ORDER BY createdAt DESC LIMIT ?`,
+    args: [traceId, problem, limit],
   });
   
-  // Score traces by problem text similarity (simple word matching)
-  const problemWords = problem.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+  return result.rows.map(row => ({
+    id: String(row.id),
+    problem: String(row.problem),
+    steps: JSON.parse(String(row.steps)),
+    tags: JSON.parse(String(row.tags)),
+    createdAt: String(row.createdAt),
+  }));
+}
+
+export async function getAlternativeSolutionsByProblem(problem: string, limit = 10): Promise<MindTrace[]> {
+  await initDB();
   
-  const scored = result.rows.map(row => {
-    const traceProblem = String(row.problem).toLowerCase();
-    const traceWords = traceProblem.split(/\s+/).filter(w => w.length > 3);
-    
-    // Count matching words
-    const matches = problemWords.filter(w => traceWords.some(tw => tw.includes(w) || w.includes(tw))).length;
-    
-    return {
-      trace: {
-        id: String(row.id),
-        problem: String(row.problem),
-        steps: JSON.parse(String(row.steps)),
-        tags: JSON.parse(String(row.tags)),
-        createdAt: String(row.createdAt),
-      },
-      score: matches,
-    };
+  // Find all traces with exact same problem text
+  const result = await db.execute({
+    sql: `SELECT id, problem, steps, tags, createdAt FROM traces WHERE LOWER(problem) = LOWER(?) ORDER BY createdAt DESC LIMIT ?`,
+    args: [problem, limit],
   });
   
-  // Return top matches with at least 1 word match
-  return scored
-    .filter(s => s.score > 0)
-    .sort((a, b) => b.score - a.score || new Date(b.trace.createdAt).getTime() - new Date(a.trace.createdAt).getTime())
-    .slice(0, limit)
-    .map(s => s.trace);
+  return result.rows.map(row => ({
+    id: String(row.id),
+    problem: String(row.problem),
+    steps: JSON.parse(String(row.steps)),
+    tags: JSON.parse(String(row.tags)),
+    createdAt: String(row.createdAt),
+  }));
 }

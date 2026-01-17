@@ -16,7 +16,7 @@ interface SimilarTrace {
 export function SimilarTraces({ traceId, problem }: { traceId: string; problem: string }) {
   const { lang } = useLanguage();
   const [similar, setSimilar] = useState<SimilarTrace[]>([]);
-  const [alternatives, setAlternatives] = useState<SimilarTrace[]>([]);
+  const [alternativeCount, setAlternativeCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export function SimilarTraces({ traceId, problem }: { traceId: string; problem: 
       .then(r => r.json())
       .then(data => {
         setSimilar(data.similar || []);
-        setAlternatives(data.alternatives || []);
+        setAlternativeCount(data.alternativeCount || 0);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -43,40 +43,25 @@ export function SimilarTraces({ traceId, problem }: { traceId: string; problem: 
         <span>{t(lang, 'solveItDifferently')}</span>
       </Link>
 
-      {/* Alternative Solutions section */}
-      {alternatives.length > 0 && (
-        <div className="mb-8">
-          <h3 className="text-lg font-semibold mb-2 dark:text-white flex items-center gap-2">
-            <span>💡</span> Alternative Solutions
-          </h3>
-          <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-4">
-            Other ways people solved this problem
-          </p>
-          
-          <div className="space-y-3">
-            {alternatives.map((trace) => (
-              <Link
-                key={trace.id}
-                href={`/trace/${trace.id}`}
-                className="trace-card flex items-start justify-between gap-4 p-4"
-              >
-                <div className="flex-1 min-w-0">
-                  <p className="text-base font-medium dark:text-white line-clamp-2 mb-2">
-                    {trace.problem}
-                  </p>
-                  <div className="flex items-center justify-between text-sm text-neutral-500 dark:text-neutral-400">
-                    <span>{trace.steps.length} {trace.steps.length !== 1 ? t(lang, 'steps') : t(lang, 'step')}</span>
-                    {trace.resonateCount > 0 && (
-                      <span className="flex items-center gap-1">
-                        <span>💭</span> {trace.resonateCount}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </Link>
-            ))}
+      {/* Alternative Solutions link */}
+      {alternativeCount > 0 && (
+        <Link
+          href={`/alternatives?problem=${encodeURIComponent(problem)}`}
+          className="trace-card flex items-center justify-between gap-4 p-4 mb-8"
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">💡</span>
+            <div>
+              <p className="font-semibold dark:text-white">
+                {alternativeCount} {alternativeCount === 1 ? 'Alternative Solution' : 'Alternative Solutions'}
+              </p>
+              <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                Other ways people solved this problem
+              </p>
+            </div>
           </div>
-        </div>
+          <span className="text-neutral-400 dark:text-neutral-500">→</span>
+        </Link>
       )}
 
       {/* Similar traces section */}
@@ -115,7 +100,7 @@ export function SimilarTraces({ traceId, problem }: { traceId: string; problem: 
         </>
       )}
       
-      {similar.length === 0 && alternatives.length === 0 && (
+      {similar.length === 0 && alternativeCount === 0 && (
         <p className="text-sm text-neutral-400 dark:text-neutral-500 text-center">
           {t(lang, 'noSimilarTraces')}
         </p>

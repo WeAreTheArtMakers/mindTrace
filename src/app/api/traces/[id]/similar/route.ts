@@ -10,13 +10,13 @@ export async function GET(
     const trace = await getTrace(id);
     
     if (!trace) {
-      return NextResponse.json({ similar: [], alternatives: [] });
+      return NextResponse.json({ similar: [], alternativeCount: 0 });
     }
     
     const similar = await getSimilarTraces(id, trace.tags, 3);
-    const alternatives = await getAlternativeSolutions(id, trace.problem, 5);
+    const alternatives = await getAlternativeSolutions(id, trace.problem, 100); // Get count
     
-    // Add resonate counts
+    // Add resonate counts to similar
     const withCountsSimilar = await Promise.all(
       similar.map(async (t) => ({
         ...t,
@@ -24,19 +24,13 @@ export async function GET(
       }))
     );
     
-    const withCountsAlternatives = await Promise.all(
-      alternatives.map(async (t) => ({
-        ...t,
-        resonateCount: await getResonateCount(t.id),
-      }))
-    );
-    
     return NextResponse.json({ 
       similar: withCountsSimilar,
-      alternatives: withCountsAlternatives 
+      alternativeCount: alternatives.length,
+      problem: trace.problem
     });
   } catch (error) {
     console.error('Similar traces error:', error);
-    return NextResponse.json({ similar: [], alternatives: [] });
+    return NextResponse.json({ similar: [], alternativeCount: 0 });
   }
 }
