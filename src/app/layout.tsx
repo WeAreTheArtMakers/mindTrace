@@ -116,12 +116,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             --card-border: #262626;
             --muted: #a3a3a3;
           }
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
           html, body {
             background: var(--bg);
             color: var(--text);
             font-family: system-ui, -apple-system, sans-serif;
             margin: 0;
             min-height: 100vh;
+            width: 100%;
+          }
+          /* Ensure text is visible */
+          h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea {
+            color: inherit;
           }
           /* Critical card styles for immediate render */
           .trace-card, .trace-step-card {
@@ -129,6 +139,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             border: 1px solid var(--card-border);
             border-radius: 16px;
             padding: 16px;
+            color: var(--text);
           }
           .search-input, .tag-select {
             background: var(--card-bg);
@@ -144,6 +155,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             border-radius: 20px;
             padding: 4px 10px;
             font-size: 12px;
+            color: var(--text);
+          }
+          /* Ensure buttons are visible */
+          button, a {
+            cursor: pointer;
+          }
+          /* Ensure inputs are visible */
+          input, select, textarea {
+            background: var(--card-bg);
+            color: var(--text);
+            border: 1px solid var(--card-border);
           }
         ` }} />
         {/* Twitter Card meta tags */}

@@ -10,13 +10,20 @@ export function SplashScreen() {
 
   // Check if CSS is actually loaded
   const checkCSSLoaded = () => {
+    // Test multiple Tailwind classes to ensure CSS is loaded
     const testEl = document.createElement('div');
-    testEl.className = 'bg-neutral-950';
+    testEl.className = 'bg-neutral-950 text-white';
     document.body.appendChild(testEl);
     const computedStyle = window.getComputedStyle(testEl);
     const bgColor = computedStyle.backgroundColor;
+    const textColor = computedStyle.color;
     document.body.removeChild(testEl);
-    return bgColor === 'rgb(10, 10, 10)' || bgColor === 'rgba(10, 10, 10, 1)';
+    
+    // Check both background and text color to ensure CSS is loaded
+    const bgLoaded = bgColor === 'rgb(10, 10, 10)' || bgColor === 'rgba(10, 10, 10, 1)';
+    const textLoaded = textColor === 'rgb(255, 255, 255)' || textColor === 'rgba(255, 255, 255, 1)';
+    
+    return bgLoaded && textLoaded;
   };
 
   // First effect: Check if we should show splash
