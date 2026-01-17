@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { t } from '@/lib/i18n';
+import { t, type Language } from '@/lib/i18n';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { OnboardingModal } from '@/components/OnboardingModal';
@@ -51,10 +51,11 @@ export default function Home() {
 
   // Auto-translate when language changes
   useEffect(() => {
-    if (traces.length > 0 && lang !== 'en') {
-      translateList();
+    if (traces.length > 0) {
+      setTranslatedProblems({});
+      doTranslateList(traces, lang);
     }
-  }, [lang, traces.length]);
+  }, [lang]);
 
   useEffect(() => {
     fetch('/api/tags').then(r => r.json()).then(setTags);
@@ -87,15 +88,15 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, [fetchTraces]);
 
-  const translateList = async () => {
-    if (lang === 'en' || traces.length === 0) return;
+  const doTranslateList = async (tracesToTranslate: typeof traces, targetLang: Language) => {
+    if (targetLang === 'en' || tracesToTranslate.length === 0) return;
     
     setIsTranslatingList(true);
     try {
       const res = await fetch('/api/translate/batch', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ traceIds: traces.map(t => t.id), lang }),
+        body: JSON.stringify({ traceIds: tracesToTranslate.map(t => t.id), lang: targetLang }),
       });
       const data = await res.json();
       setApiAvailable(data.apiAvailable);
@@ -115,6 +116,10 @@ export default function Home() {
     } finally {
       setIsTranslatingList(false);
     }
+  };
+
+  const translateList = async () => {
+    doTranslateList(traces, lang);
   };
 
   const totalPages = Math.ceil(total / 10);
