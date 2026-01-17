@@ -49,6 +49,13 @@ export default function Home() {
     setTranslatedProblems({});
   }, [query, tag, page, lang]);
 
+  // Auto-translate when language changes
+  useEffect(() => {
+    if (traces.length > 0 && lang !== 'en') {
+      translateList();
+    }
+  }, [lang, traces.length]);
+
   useEffect(() => {
     fetch('/api/tags').then(r => r.json()).then(setTags);
     fetch('/api/featured').then(r => r.json()).then(d => setFeaturedId(d.id));
