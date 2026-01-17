@@ -203,15 +203,15 @@ export async function searchTracesExcludingAlternatives(
     sql += ` ORDER BY 
       CASE WHEN seedId IS NULL THEN 0 ELSE 1 END,
       CASE WHEN seedId IS NOT NULL AND localeHint = ? THEN 0 ELSE 1 END,
-      createdAt DESC`;
+      createdAt ASC`;
     args.push(locale);
   } else {
-    sql += ' ORDER BY CASE WHEN seedId IS NULL THEN 0 ELSE 1 END, createdAt DESC';
+    sql += ' ORDER BY CASE WHEN seedId IS NULL THEN 0 ELSE 1 END, createdAt ASC';
   }
   
   const result = await db.execute({ sql, args });
   
-  // Group by problem and keep only the first (oldest) trace for each problem
+  // Group by problem (case-insensitive) and keep only the FIRST (oldest) trace for each problem
   const problemMap = new Map<string, typeof result.rows[0]>();
   result.rows.forEach(row => {
     const problem = String(row.problem).toLowerCase();
@@ -221,6 +221,14 @@ export async function searchTracesExcludingAlternatives(
   });
   
   const uniqueTraces = Array.from(problemMap.values());
+  
+  // Sort by creation date (newest first) for display
+  uniqueTraces.sort((a, b) => {
+    const dateA = new Date(String(a.createdAt)).getTime();
+    const dateB = new Date(String(b.createdAt)).getTime();
+    return dateB - dateA;
+  });
+  
   const total = uniqueTraces.length;
   
   // Paginate
