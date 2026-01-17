@@ -34,7 +34,7 @@ export default function Home() {
   const [shownOfflineNote, setShownOfflineNote] = useState(false);
 
   const doTranslateList = useCallback(async (tracesToTranslate: typeof traces, targetLang: Language) => {
-    if (targetLang === 'en' || tracesToTranslate.length === 0) return;
+    if (tracesToTranslate.length === 0) return;
     
     setIsTranslatingList(true);
     try {
@@ -125,7 +125,7 @@ export default function Home() {
   const totalPages = Math.ceil(total / 10);
   const hasNoResults = !loading && traces.length === 0 && query;
   const hasNoTraces = !loading && traces.length === 0 && !query;
-  const showTranslateButton = lang !== 'en' && traces.length > 0 && Object.keys(translatedProblems).length === 0;
+  const showTranslateButton = traces.length > 0 && Object.keys(translatedProblems).length === 0;
 
   return (
     <div>
@@ -179,7 +179,7 @@ export default function Home() {
       )}
       
       {/* Offline note - shown once per session */}
-      {apiAvailable === false && !shownOfflineNote && lang !== 'en' && (
+      {apiAvailable === false && !shownOfflineNote && (
         <p className="text-sm text-amber-600 dark:text-amber-400 mb-4">
           {t(lang, 'translationRequiresKey')}
         </p>
