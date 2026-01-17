@@ -39,9 +39,9 @@ export default function Home() {
     if (query) params.set('query', query);
     if (tag) params.set('tag', tag);
     params.set('page', String(page));
-    params.set('locale', lang); // Pass locale for ordering
+    params.set('locale', lang);
     
-    const res = await fetch(`/api/traces?${params}`);
+    const res = await fetch(`/api/traces?${params}&excludeAlternatives=true`);
     const data = await res.json();
     setTraces(data.traces);
     setTotal(data.total);

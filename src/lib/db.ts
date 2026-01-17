@@ -175,6 +175,68 @@ export async function searchTraces(
   return { traces, total };
 }
 
+export async function searchTracesExcludingAlternatives(
+  query?: string,
+  tag?: string,
+  page = 1,
+  limit = 10,
+  locale?: string
+): Promise<{ traces: MindTrace[]; total: number }> {
+  await initDB();
+  
+  // First, get all traces with their problems
+  let sql = 'SELECT id, seedId, problem, steps, tags, localeHint, createdAt FROM traces WHERE 1=1';
+  const args: (string | number)[] = [];
+  
+  if (query) {
+    sql += ' AND LOWER(problem) LIKE ?';
+    args.push(`%${query.toLowerCase()}%`);
+  }
+  
+  if (tag) {
+    sql += ' AND tags LIKE ?';
+    args.push(`%"${tag}"%`);
+  }
+  
+  // Sort: user-created first, then locale match for seeds, then by date
+  if (locale && locale !== 'en') {
+    sql += ` ORDER BY 
+      CASE WHEN seedId IS NULL THEN 0 ELSE 1 END,
+      CASE WHEN seedId IS NOT NULL AND localeHint = ? THEN 0 ELSE 1 END,
+      createdAt DESC`;
+    args.push(locale);
+  } else {
+    sql += ' ORDER BY CASE WHEN seedId IS NULL THEN 0 ELSE 1 END, createdAt DESC';
+  }
+  
+  const result = await db.execute({ sql, args });
+  
+  // Group by problem and keep only the first (oldest) trace for each problem
+  const problemMap = new Map<string, typeof result.rows[0]>();
+  result.rows.forEach(row => {
+    const problem = String(row.problem).toLowerCase();
+    if (!problemMap.has(problem)) {
+      problemMap.set(problem, row);
+    }
+  });
+  
+  const uniqueTraces = Array.from(problemMap.values());
+  const total = uniqueTraces.length;
+  
+  // Paginate
+  const paginatedTraces = uniqueTraces.slice((page - 1) * limit, page * limit);
+  
+  const traces: MindTrace[] = paginatedTraces.map(row => ({
+    id: String(row.id),
+    problem: String(row.problem),
+    steps: JSON.parse(String(row.steps)),
+    tags: JSON.parse(String(row.tags)),
+    createdAt: String(row.createdAt),
+  }));
+  
+  return { traces, total };
+}
+
 export async function getAllTags(): Promise<string[]> {
   await initDB();
   

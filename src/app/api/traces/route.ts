@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createTrace, searchTraces } from '@/lib/db';
+import { createTrace, searchTraces, searchTracesExcludingAlternatives } from '@/lib/db';
 
 export async function GET(request: NextRequest) {
   try {
@@ -8,8 +8,12 @@ export async function GET(request: NextRequest) {
     const tag = searchParams.get('tag') || undefined;
     const page = parseInt(searchParams.get('page') || '1', 10);
     const locale = searchParams.get('locale') || undefined;
+    const excludeAlternatives = searchParams.get('excludeAlternatives') === 'true';
     
-    const result = await searchTraces(query, tag, page, 10, locale);
+    const result = excludeAlternatives 
+      ? await searchTracesExcludingAlternatives(query, tag, page, 10, locale)
+      : await searchTraces(query, tag, page, 10, locale);
+    
     return NextResponse.json(result);
   } catch (error) {
     console.error('GET /api/traces error:', error);
