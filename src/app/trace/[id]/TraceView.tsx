@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { t } from '@/lib/i18n';
+import { t, type Language, SUPPORTED_LANGUAGES } from '@/lib/i18n';
 import { useTraceTranslation } from '@/hooks/useTranslation';
 import { Footer } from '@/components/Footer';
 import { OnboardingModal } from '@/components/OnboardingModal';
@@ -20,6 +20,18 @@ export function TraceView({ trace, featuredId }: { trace: MindTrace; featuredId:
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showTranslationInfo, setShowTranslationInfo] = useState(false);
+  const [isDirectAccess, setIsDirectAccess] = useState(false);
+
+  // Detect if user accessed trace directly (not from homepage)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const referrer = document.referrer;
+      // If no referrer or referrer is not from same site, it's direct access
+      if (!referrer || !referrer.includes(window.location.hostname)) {
+        setIsDirectAccess(true);
+      }
+    }
+  }, []);
 
   return (
     <div>
@@ -49,6 +61,11 @@ export function TraceView({ trace, featuredId }: { trace: MindTrace; featuredId:
         )}
         {showOriginalNote && (
           <p className="text-sm text-amber-600 dark:text-amber-400 mb-2">{t(lang, 'translationUnavailable')}</p>
+        )}
+        {isDirectAccess && isTranslating && (
+          <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-4 p-3 bg-neutral-100 dark:bg-neutral-800 rounded">
+            {t(lang, 'translating')}...
+          </p>
         )}
         
         <h1 className="text-2xl font-semibold mb-6 dark:text-white">{problem}</h1>
