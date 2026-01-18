@@ -118,7 +118,7 @@ export function SplashScreen() {
       if (checkAndHide()) return;
 
       let attempts = 0;
-      const maxAttempts = 50; // Increased attempts
+      const maxAttempts = 20; // Reduced from 50 to 20
       const cssCheckInterval = setInterval(() => {
         attempts++;
         if (checkAndHide() || attempts >= maxAttempts) {
@@ -127,7 +127,7 @@ export function SplashScreen() {
             hideSplash();
           }
         }
-      }, 100);
+      }, 50); // Reduced from 100ms to 50ms
 
       // Cleanup stored in ref for the outer effect
       (window as unknown as { __splashCleanup?: () => void }).__splashCleanup = () => {
